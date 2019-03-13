@@ -1,0 +1,66 @@
+@page
+@model Roll_Driven_Stories.Pages.Posts.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Post.ID" />
+            <div class="form-group">
+                <label asp-for="Post.Title" class="control-label"></label>
+                <input asp-for="Post.Title" class="form-control" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Slug" class="control-label"></label>
+                <input asp-for="Post.Slug" class="form-control" />
+                <span asp-validation-for="Post.Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Excerpt" class="control-label"></label>
+                <input asp-for="Post.Excerpt" class="form-control" />
+                <span asp-validation-for="Post.Excerpt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Content" class="control-label"></label>
+                <input asp-for="Post.Content" class="form-control" />
+                <span asp-validation-for="Post.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.PubDate" class="control-label"></label>
+                <input asp-for="Post.PubDate" class="form-control" />
+                <span asp-validation-for="Post.PubDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.LastModified" class="control-label"></label>
+                <input asp-for="Post.LastModified" class="form-control" />
+                <span asp-validation-for="Post.LastModified" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Post.IsPublished" /> @Html.DisplayNameFor(model => model.Post.IsPublished)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Categories" class="control-label"></label>
+                <input asp-for="Post.Categories" class="form-control" />
+                <span asp-validation-for="Post.Categories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
