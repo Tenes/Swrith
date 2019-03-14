@@ -1,0 +1,71 @@
+﻿body, html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding: 3em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.post {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: url(https://images.unsplash.com/photo-1468958118603-09353f91a3dc);
+  background-size: cover;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 1%;
+  width: 30%;
+  height: 375px;
+
+  border-radius: 6px;
+  padding: 2em;
+  box-sizing: border-box;
+  /* box-shadow: 0 4px 25px rgba(.2, .2, .2, .3); */
+
+}
+
+.post h3.title {
+  font-weight: bold;
+  font-size: 2em;
+  margin: 0;
+}
+
+.post div.description {
+  font-weight: 300;
+  font-family: .9em;
+  color: rgba(255, 255, 255, .95);
+  margin-top: 2em;
+}
+
+.post div.description span {
+  color: white;
+  opacity: 1;
+  font-weight: bold;
+}
+
+.post .filler {
+  flex-grow: 1;
+}
+
+.post .category {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: .7em;
+}
+
+.post span.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  background: rgba(255, 255, 255, .1);
+}

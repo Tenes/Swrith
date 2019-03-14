@@ -1,0 +1,13 @@
+@page "/{slug}"
+@model Roll_Driven_Stories.Pages.ArticleModel
+@{
+    ViewData["Title"] = "Article";
+}
+
+<div class="post">
+    <span class="background"></span>
+    <h3 class="title">@Model.Slug</h3>
+    <div class="description"></div>
+    <span class="filler"></span>
+    <div class="category"></div>
+</div>
