@@ -1,0 +1,43 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    color: rgb(40, 40, 40, .95);
+    background-color: whitesmoke;
+}
+
+.header {
+    max-width: 880px;
+    margin: auto;
+}
+
+.header h1{
+    font-size: 6em;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 0;
+    margin-top: 0.25em;
+    line-height: .9;
+}
+
+.header .fake-hr {
+    border-bottom: 6px solid rgb(40, 40, 40, 0.8);
+    margin: auto;
+    width: 45%;
+    margin-top: 1.75em;
+    margin-bottom: 2.5em;
+}
+
+.content {
+    max-width: 680px;
+    margin: auto;
+    text-align: justify;
+    padding: 0 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    line-height: 1.25;
+}
+
+h2::first-letter {
+    color: #3498db;
+}
+
+

@@ -1,12 +1,31 @@
 {
     "posts": [
         {
-            "slug": "",
-            "title": "",
-            "summary": "",
+            "slug": "hello",
+            "title": "Venter dolor amicas enter dolor amicas",
+            "summary": "Lorem ipsum for hello.md file",
             "md_path": "articles/hello.md",
-            "img_path": "images/hello.png",
-            "published_date": ""
+            "img_path": "images/hello.jpg",
+            "published_date": "20190314",
+            "categories": "hello|delice"
+        },
+        {
+            "slug": "world",
+            "title": "World",
+            "summary": "Lorem ipsum for world.md file",
+            "md_path": "articles/world.md",
+            "img_path": "images/world.jpg",
+            "published_date": "20190315",
+            "categories": "world|teubi"
+        },
+        {
+            "slug": "world1",
+            "title": "World1",
+            "summary": "Lorem ipsum for world.md file",
+            "md_path": "articles/world.md",
+            "img_path": "images/world.jpg",
+            "published_date": "20190315",
+            "categories": "world|teubi"
         }
     ]
 }

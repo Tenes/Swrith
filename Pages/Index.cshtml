@@ -3,13 +3,14 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<link rel="stylesheet" href="~/css/site.css" />
 
-
-
-<div class="post">
-    <span class="background"></span>
-    <h3 class="title">Bjr</h3>
-    <div class="description">dfdfd</div>
-    <span class="filler"></span>
-    <div class="category"></div>
-</div>
+@foreach(Classes.Post post in Model.Posts)
+{
+    <a asp-page="Article" asp-route-slug="@post.Slug" class="post" style="background-image: url(@post.ImgPath)">
+        <h3 class="title">@post.Title</h3>
+        <div class="description">@post.Summary</div>
+        <span class="filler"></span>
+        <div class="category">@post.Categories</div>
+    </a>
+}
