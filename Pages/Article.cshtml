@@ -6,8 +6,13 @@
 <link rel="stylesheet" href="~/css/article.css" />
 
 <div class="header">
+    <div class="navigation">
+        <a asp-page="Index" >
+            <span class="index-link">STORIES</span>
+        </a>
+        <span class="article-title">@Model.Post.Title</span>
+    </div>
     <h1 class="title">@Model.Post.Title</h3>
-    <div class="fake-hr"></div>
 </div>
 <div class="content">@Model.ArticleContent</div>
 
