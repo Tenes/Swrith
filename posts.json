@@ -5,7 +5,7 @@
             "title": "Venter dolor amicas enter dolor amicas",
             "summary": "Lorem ipsum for hello.md file",
             "md_path": "articles/hello.md",
-            "img_path": "images/hello.jpg",
+            "img_path": "images/compressed/hello350x250.jpg",
             "published_date": "20190314",
             "categories": "hello|delice"
         },
@@ -14,7 +14,7 @@
             "title": "World",
             "summary": "Lorem ipsum for world.md file",
             "md_path": "articles/world.md",
-            "img_path": "images/world.jpg",
+            "img_path": "images/compressed/world350x250.jpg",
             "published_date": "20190315",
             "categories": "world|teubi"
         },
@@ -23,7 +23,7 @@
             "title": "World1",
             "summary": "Lorem ipsum for world.md file",
             "md_path": "articles/world.md",
-            "img_path": "images/world.jpg",
+            "img_path": "images/compressed/world350x250.jpg",
             "published_date": "20190315",
             "categories": "world|teubi"
         }

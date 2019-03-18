@@ -14,11 +14,9 @@ namespace Roll_Driven_Stories.Pages
     {
         [BindProperty]
         public IList<Post> Posts { get; set; }
-        public int count = 0;
         public void OnGet()
         {
             LoadArticles();
-            count += 1;
         }
 
         private void LoadArticles()
