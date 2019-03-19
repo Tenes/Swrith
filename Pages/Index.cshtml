@@ -10,15 +10,19 @@
 <div class="post-container">
     @foreach(Classes.Post post in Model.Posts)
     {
-        <a asp-page="Article" asp-route-slug="@post.Slug">
             <div class="post">
-                <div class="thumbnail" style="background-image: url(@post.ImgPath)"></div>
-                <div class="text-container">
-                    <h3 class="title">@post.Title</h3>
+                <h3 class="title">
+                    <a asp-page="Article" asp-route-slug="@post.Slug">
+                        @post.Title
+                    </a>    
+                </h3>
+                <div class="infos-container">
                     <div class="description">@post.Summary</div>
-                    <div class="category">@post.Categories</div>
+                    <div class="category-infos">
+                        <img src="@post.ImgPath" alt="Main Category">
+                        <div class="category">@post.Categories</div>
+                    </div>
                 </div>
             </div>
-        </a>
     }
 </div>

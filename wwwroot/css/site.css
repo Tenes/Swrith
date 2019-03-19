@@ -9,14 +9,15 @@ a {
   color: rgb(40, 40, 40);
 }
 
+a:hover .title {
+}
+
 nav {
   background-color: white;
   border-bottom: 1px solid #e40712;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
   top: 0;
   left: 0;
   right: 0;
-  margin-bottom: 1em;
   display: flex;
   align-items: center;
   padding: 0 3em;
@@ -29,65 +30,75 @@ nav .bar h1 {
 }
 
 .post-container {
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 0;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
+  flex-flow: wrap;
 }
 
 .post {
-  width: 30%;
+    flex-grow: 1;
+    min-width: 350px;
+    max-width: 350px;
+    margin: 3em 1.5em 0 1.5em;
+    display: flex;
+    flex-direction: column;
 }
 
-.post-container > a {
-  align-self: stretch;
-} 
-
-.category {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: .7em;
-}
-.post-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-}
-
-.post-container .post {
-  margin: 10px;
-  width: 350px;
-  display: flex;
-  flex-flow: column nowrap;
-  box-shadow: 0 5px 6px rgba(20,20,20, .25);
-  background-color: white;
-  overflow: hidden;
-  border-radius: 5px 5px 0 0;
-}
-
-.thumbnail {
-  height: 250px;
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.19) inset;
-}
-
-.text-container {
-  padding: 5px;
-  flex-grow: 1;
+.post .title {
+  margin: 0;
+  padding-left: 3px;
+  font-size: 2em;
+  font-weight: bold;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-bottom: .25em;
+  margin-top: .25em;
+  line-height: .9;
+  flex-shrink: 0;
+  min-height: 2em;
+  display: flex;
+  align-items: flex-end;
 }
 
-.text-container .title {
-  font-size: 1.3em;
-  margin-top: 0;
-  margin-bottom: 5px;
+.post .infos-container {
+  padding: 1em;
+  box-shadow: 0 1px 1px rgb(30, 30, 30, .4);
+  background-color: white;
+  border-top: 2px solid #e40712;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.post .infos-container .description {
+  padding-bottom: 1.5em;
+  flex-grow: 1;
+
+}
+
+.post .infos-container .category-infos {
+  display:flex;
+  align-items: flex-end;
+}
+
+.category-infos > img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  box-shadow: 0 1px 6px rgb(20, 20, 20, .3);
+}
+
+.category-infos .category {
+  padding-left: 0.75em;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 @media (min-width: 1024px) {
   nav {
      height: 64px;
      position: static;
-     
  }
 }
