@@ -1,13 +1,15 @@
-using System.IO;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using Roll_Driven_Stories.Classes;
 using Roll_Driven_Stories.Extensions;
+using Newtonsoft.Json.Linq;
 
 namespace Roll_Driven_Stories.Pages
 {
@@ -25,10 +27,10 @@ namespace Roll_Driven_Stories.Pages
         private void LoadArticle(string slug)
         {
             using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
-            using (var jsonReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+            using (var jsonReader = new JsonTextReader(streamReader))
             {
-                var json = Newtonsoft.Json.Linq.JObject.Load(jsonReader);
-                Post = json["posts"].Children<Newtonsoft.Json.Linq.JObject>()
+                var json = JObject.Load(jsonReader);
+                Post = json["posts"].Children<JObject>()
                         .FirstOrDefault(child => (string)child["slug"] == slug).ToObject<Post>();
             }
             LoadArticleContent();

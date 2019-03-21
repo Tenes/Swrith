@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +12,25 @@ using Roll_Driven_Stories.Classes;
 
 namespace Roll_Driven_Stories.Pages
 {
-    public class IndexModel : PageModel
+    public class TagModel : PageModel
     {
         [BindProperty]
         public IList<Post> Posts { get; set; }
-        public void OnGet()
+        public void OnGet(string tag)
         {
-            LoadArticles();
+            LoadArticlesByTag(tag);
         }
 
-        private void LoadArticles()
+        private void LoadArticlesByTag(string tag)
         {
             using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
                 var json = JObject.Load(jsonReader);
                 var postArray = (JArray)json["posts"];
-                Posts = postArray.ToObject<IList<Post>>();
+                Posts = new JArray(postArray.Where(post => ((string)post["categories"])
+                    .Contains(tag)))
+                    .ToObject<IList<Post>>();
             }
         }
     }

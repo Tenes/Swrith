@@ -100,10 +100,10 @@ namespace Roll_Driven_Stories
         {
             using (var image = new MagickImage(new FileInfo(filePath)))
             {
-                var size = new MagickGeometry(350, 250);
+                var size = new MagickGeometry(50, 50);
                 size.IgnoreAspectRatio = true;
                 image.Resize(size);
-                image.Write(filePath.Insert(filePath.LastIndexOf('.'), $"350x250"));
+                image.Write(filePath.Insert(filePath.LastIndexOf('.'), $"50x50"));
             }
         }
     }

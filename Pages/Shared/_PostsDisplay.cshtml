@@ -1,0 +1,28 @@
+<div class="post-container">
+    @foreach(Classes.Post post in Model.Posts)
+    {
+        <div class="post">
+            <h3 class="title">
+                <a asp-page="Article" asp-route-slug="@post.Slug">
+                    @post.Title
+                </a>    
+            </h3>
+            <div class="infos-container">
+                <div class="description">@post.Summary</div>
+                <div class="category-infos">
+                    <img src="@post.ImgPath" alt="Main Category">
+                    <div class="categories">
+                        @foreach(string category in post.Categories.Split('|'))
+                        {
+                            <div class="category">
+                                <a asp-page="Tag" asp-route-tag="@category">
+                                    #@category
+                                </a>
+                            </div>
+                        }    
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

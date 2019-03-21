@@ -5,7 +5,7 @@
             "title": "Venter dolor amicas enter dolor amicas",
             "summary": "Si ipsa raptas rumor mea quid ubique virtus, est mihi precor ut trabes, in vacuas invidit. Cadunt viae exploratis quicquid Melampus tibi quaedam ponti aliis, mecum. Addidit",
             "md_path": "articles/hello.md",
-            "img_path": "images/compressed/hello350x250.jpg",
+            "img_path": "/images/compressed/hello50x50.jpg",
             "published_date": "20190314",
             "categories": "hello|delice"
         },
@@ -14,7 +14,7 @@
             "title": "World",
             "summary": "Si ipsa raptas rumor mea quid ubique virtus, est mihi precor ut trabes, in vacuas invidit. Cadunt viae exploratis quicquid Melampus tibi quaedam ponti aliis, mecum. Addidit",
             "md_path": "articles/world.md",
-            "img_path": "images/compressed/world350x250.jpg",
+            "img_path": "/images/compressed/world50x50.jpg",
             "published_date": "20190315",
             "categories": "world|teubi"
         },
@@ -23,7 +23,7 @@
             "title": "World1",
             "summary": "Si ipsa raptas rumor mea quid ubique virtus, est mihi precor ut trabes, in vacuas invidit. Cadunt viae exploratis quicquid Melampus tibi quaedam ponti aliis, mecum. Addidit",
             "md_path": "articles/world.md",
-            "img_path": "images/compressed/world350x250.jpg",
+            "img_path": "/images/compressed/world50x50.jpg",
             "published_date": "20190315",
             "categories": "world|teubi"
         },
@@ -32,7 +32,7 @@
             "title": "Venter dolor amicas enter dolor amicas",
             "summary": "Si ipsa raptas rumor mea quid ubique virtus, est mihi precor ut trabes, in vacuas invidit. Cadunt viae exploratis quicquid Melampus tibi quaedam ponti aliis, mecum. Addidit viae exploratis quicquid Melampus tibi quaeda",
             "md_path": "articles/hello.md",
-            "img_path": "images/compressed/hello350x250.jpg",
+            "img_path": "/images/compressed/hello50x50.jpg",
             "published_date": "20190314",
             "categories": "hello|delice"
         },
@@ -41,7 +41,7 @@
             "title": "Venter dolor amicas enter dolor amicas",
             "summary": "Si ipsa raptas rumor mea quid ubique virtus, est mihi precor ut trabes, in vacuas invidit. Cadunt viae exploratis quicquid Melampus tibi quaedam ponti aliis, mecum. Addidit",
             "md_path": "articles/hello.md",
-            "img_path": "images/compressed/hello350x250.jpg",
+            "img_path": "/images/compressed/hello50x50.jpg",
             "published_date": "20190314",
             "categories": "hello|delice"
         }
