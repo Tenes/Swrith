@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ImageMagick;
+using Roll_Driven_Stories.Extensions;
 
 namespace Roll_Driven_Stories
 {
@@ -18,12 +18,14 @@ namespace Roll_Driven_Stories
     {
         public IConfiguration Configuration { get; }
         public static string ContentRoot { get; set; }
-        public static FileSystemWatcher Watcher { get; set; }
+        public static FileSystemWatcher ImageWatcher { get; set; }
+        public static FileSystemWatcher ArticleWatcher { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             ContentRoot = configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
-            SetupSystemWatcher();
+            SystemWatcherUtils.SetupImageWatcher();
+            SystemWatcherUtils.SetupArticleWatcher();
         }
 
 
@@ -61,50 +63,6 @@ namespace Roll_Driven_Stories
             app.UseCookiePolicy();
 
             app.UseMvc();
-        }
-
-
-        private void SetupSystemWatcher()
-        {
-            Watcher = new FileSystemWatcher();
-            Watcher.Path = Path.Combine(ContentRoot, "wwwroot", "images", "raw");
-            Watcher.NotifyFilter = NotifyFilters.FileName;
-            Watcher.Filter = "*.jpg";
-            Watcher.Created += OnCreate;
-            Watcher.EnableRaisingEvents = true;
-        }
-
-        private static void OnCreate(object source, FileSystemEventArgs e)
-        {
-            Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
-            CompressImage(e.FullPath);
-            File.Delete(e.FullPath);
-        }
-
-        private static void CompressImage(string filePath)
-        {
-            FileInfo snakewareLogo = new FileInfo(filePath);
-            using (var magickImage = new MagickImage(snakewareLogo))
-            {
-                ImageOptimizer optimizer = new ImageOptimizer();
-                optimizer.LosslessCompress(filePath);
-                magickImage.Format = MagickFormat.Jpg;
-                magickImage.Quality = 80;
-                magickImage.Strip();
-                magickImage.Write(filePath.Replace("raw", "compressed"));
-            }
-            ResizeImage(filePath.Replace("raw", "compressed"));
-        }
-
-        private static void ResizeImage(string filePath)
-        {
-            using (var image = new MagickImage(new FileInfo(filePath)))
-            {
-                var size = new MagickGeometry(50, 50);
-                size.IgnoreAspectRatio = true;
-                image.Resize(size);
-                image.Write(filePath.Insert(filePath.LastIndexOf('.'), $"50x50"));
-            }
         }
     }
 }

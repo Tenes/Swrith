@@ -11,7 +11,7 @@
 }
 
 .post-container .post .title > a:hover {
-  color: #e93841;
+  color: #8E0007;
 }
 
 nav {
@@ -72,48 +72,49 @@ nav h1 > a {
   box-shadow: 0 1px 1px rgb(30, 30, 30, .4);
   background-color: white;
   border-top: 2px solid #e40712;
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
 }
 
 .post .infos-container .description {
   padding-bottom: 1.5em;
   flex-grow: 1;
-
+  text-align: justify;
 }
 
-.post .infos-container .category-infos {
-  display:flex;
-  align-items: flex-end;
+.post .infos-container .description::first-letter {
+  color: #bf0009;
+  font-size: 1.25em;
+  font-weight: bold;
 }
 
-.category-infos > img {
+.post .infos-container > img {
   border-radius: 50%;
   width: 50px;
   height: 50px;
   box-shadow: 0 1px 6px rgb(20, 20, 20, .3);
+  margin-right: 1em;
+  float: left;
 }
 
-.category-infos .categories {
+.categories {
   padding-left: 0.75em;
-  height: 100%;
   display: flex;
   align-items: center;
+  flex-grow: 1;
 }
 
-.category-infos .categories .category {
+.categories .category {
   margin-right: 0.3em;
   font-size: 0.8em;
 }
 
-.category-infos .categories .category > a {
+.categories .category > a {
   text-decoration: none;
-  color: #e93841;
+  color: #8E0007;
   opacity: .7;
 }
 
-.category-infos .categories .category > a:hover {
+.categories .category > a:hover {
   text-decoration: underline;
   opacity: 1;
 }

@@ -1,5 +1,5 @@
-using System;
 using System.IO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,33 +7,32 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using Roll_Driven_Stories.Classes;
-using Roll_Driven_Stories.Extensions;
 using Newtonsoft.Json.Linq;
+using Roll_Driven_Stories.Classes;
 
 namespace Roll_Driven_Stories.Pages
 {
-    public class ArticleModel : PageModel
+    public class SearchModel : PageModel
     {
         [BindProperty]
-        public Post Post { get; set; }
-        [BindProperty]
-        public Microsoft.AspNetCore.Html.HtmlString ArticleContent {get; set;}
-        public void OnGet(string slug)
+        public IList<Post> Posts { get; set; }
+        public void OnGet(string search)
         {
-            LoadArticle(slug);
+            LoadArticlesBySearch(search.ToLower());
         }
 
-        private void LoadArticle(string slug)
+        private void LoadArticlesBySearch(string search)
         {
             using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
                 var json = JObject.Load(jsonReader);
-                Post = json["posts"].Children<JObject>()
-                        .FirstOrDefault(child => (string)child["slug"] == slug).ToObject<Post>();
+                var postArray = (JArray)json["posts"];
+                Posts = new JArray(postArray.Where(post => ((string)post["title"]).ToLower()
+                    .Contains(search) ||
+                    ((string)post["preview"]).ToLower().Contains(search)))
+                    .ToObject<IList<Post>>();
             }
-            ArticleContent = SystemWatcherUtils.GetHtmlFromMd($@"{Startup.ContentRoot}/{Post.MdPath}");
         }
     }
 }

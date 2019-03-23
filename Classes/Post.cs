@@ -10,8 +10,8 @@ namespace Roll_Driven_Stories.Classes
         [JsonProperty("title")]
         public string Title { get; set; }
         
-        [JsonProperty("summary")]
-        public string Summary { get; set; }
+        [JsonProperty("preview")]
+        public string Preview { get; set; }
         
         [JsonProperty("md_path")]
         public string MdPath { get; set; }
@@ -24,5 +24,16 @@ namespace Roll_Driven_Stories.Classes
 
         [JsonProperty("categories")]
         public string Categories { get; set; }
+
+        public Post(string slug, string title, string preview, string mdPath, string imgPath, string publishedDate, string categories)
+        {
+            this.Slug = slug;
+            this.Title = title;
+            this.Preview = preview;
+            this.MdPath = mdPath;
+            this.ImgPath = imgPath;
+            this.PublishedDate = publishedDate;
+            this.Categories = categories;
+        }
     }
 }

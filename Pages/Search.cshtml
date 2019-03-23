@@ -1,0 +1,7 @@
+@page "/read/contains/{search?}"
+@model Roll_Driven_Stories.Pages.SearchModel
+@{
+    ViewData["Title"] = "Search";
+}
+@Html.Partial("/Pages/Shared/_Navbar.cshtml")
+@Html.Partial("/Pages/Shared/_PostsDisplay.cshtml")

@@ -18,16 +18,16 @@ namespace Roll_Driven_Stories.Pages
         public IList<Post> Posts { get; set; }
         public void OnGet()
         {
-            LoadArticles();
+            LoadLatestArticles();
         }
 
-        private void LoadArticles()
+        private void LoadLatestArticles()
         {
             using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
                 var json = JObject.Load(jsonReader);
-                var postArray = (JArray)json["posts"];
+                var postArray =  JArray.FromObject(json["posts"].Take(6));
                 Posts = postArray.ToObject<IList<Post>>();
             }
         }

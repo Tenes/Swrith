@@ -8,19 +8,17 @@
                 </a>    
             </h3>
             <div class="infos-container">
-                <div class="description">@post.Summary</div>
-                <div class="category-infos">
-                    <img src="@post.ImgPath" alt="Main Category">
-                    <div class="categories">
-                        @foreach(string category in post.Categories.Split('|'))
-                        {
-                            <div class="category">
-                                <a asp-page="Tag" asp-route-tag="@category">
-                                    #@category
-                                </a>
-                            </div>
-                        }    
-                    </div>
+                <img src="@post.ImgPath" alt="Article Image">
+                <div class="description">@post.Preview</div>
+                <div class="categories">
+                    @foreach(string category in post.Categories.Split('|'))
+                    {
+                        <div class="category">
+                            <a asp-page="Tag" asp-route-tag="@category">
+                                #@category
+                            </a>
+                        </div>
+                    }    
                 </div>
             </div>
         </div>
