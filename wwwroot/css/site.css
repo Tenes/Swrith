@@ -1,8 +1,13 @@
-﻿body, html {
+﻿:root {
+  --z-navbar: 10;
+  --z-body: 0;
+}
+
+body, html {
   margin: 0;
   padding: 0;
   color: rgb(40, 40, 40, .95);
-  background-color: #fdfcfa;
+  background-color: #fdfcfa; 
 }
 
 .post-container .post .title > a {
@@ -28,11 +33,46 @@ nav {
 nav h1 {
   margin: 0.4em 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: rgba(40, 40, 40, .9);
 }
 nav h1 > a {
   text-decoration: none;
-  color: rgba(40, 40, 40, .9);
+  color: rgba(40, 40, 40);
+}
+
+nav form {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+nav form > .searchbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+nav form > .searchbar > label {
+  display: none;
+}
+
+nav form > .searchbar .img {
+  background: url("/images/compressed/search.png") no-repeat;
+  height: 2em;
+  width: 2em;
+  background-position: center;
+  background-size: cover;
+  border: none;
+}
+
+nav form > .searchbar .field {
+  border: none;
+  color: rgba(40, 40, 40, 0.9);
+  height: 2em;
+  padding-right: 0.6em;
+  border-left: 1px solid #e40712;
+  padding-left: 0.3em;
+  margin-right: 0.6em;
 }
 
 .post-container {
@@ -207,16 +247,30 @@ p {
 }
 
 @media (max-width: 1024px) {
-  .navigation {
-      display: none;
+  .header .navigation {
+    display: none;
   }
   nav {
-     height: 64px;
-     position: static;
- }
-}
+    height: 64px;
+    position: sticky;
+    padding: 0 1em;
+    z-index: var(--z-navbar);
+  }
 
-@media (max-width: 850px) {
+  nav h1 > a {
+    font-size: .7em;
+  }
+  
+  nav form > .searchbar .field {
+    padding-right: 0;
+    margin-right: 0;
+  }
+
+  .post {
+    margin: .5em 1.5em 0 1.5em;
+    z-index: var(--z-body);
+  }
+
   .header h1 {
       margin-left: 6px;
   }

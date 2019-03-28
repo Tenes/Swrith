@@ -98,7 +98,12 @@ namespace Roll_Driven_Stories.Extensions
             }
             System.IO.File.WriteAllText($@"{Startup.ContentRoot}/posts.json", JsonConvert.SerializeObject(json, Formatting.Indented));
         }
-        public static HtmlString GetHtmlFromMd(string articlePath) =>  Markdown.ParseHtmlString(System.IO.File.ReadAllText(articlePath));
+        public static HtmlString GetHtmlFromMd(string articlePath)
+        {
+            string content = System.IO.File.ReadAllText(articlePath);
+            return Markdown.ParseHtmlString(content.Remove(content.LastIndexOf("Tags:")));
+        }
+
         public static string GetTextFromMd(string articlePath) =>  Markdown.Parse(System.IO.File.ReadAllText(articlePath));
     
     }

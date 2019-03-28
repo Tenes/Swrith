@@ -18,7 +18,10 @@ namespace Roll_Driven_Stories.Pages
         public IList<Post> Posts { get; set; }
         public void OnGet(string search)
         {
-            LoadArticlesBySearch(search.ToLower());
+            if(String.IsNullOrEmpty(search))
+                LoadEmptyArticle();
+            else    
+                LoadArticlesBySearch(search.ToLower());
         }
 
         private void LoadArticlesBySearch(string search)
@@ -33,6 +36,11 @@ namespace Roll_Driven_Stories.Pages
                     ((string)post["preview"]).ToLower().Contains(search)))
                     .ToObject<IList<Post>>();
             }
+        }
+
+        private void LoadEmptyArticle()
+        {
+            Posts = new List<Post>();
         }
     }
 }
