@@ -45,7 +45,7 @@ namespace Roll_Driven_Stories.Extensions
         {
             Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
             IncludeArticleInJson(e.FullPath);
-            Console.WriteLine($"{e.Name} incorporated into posts.json successfully.");
+            Console.WriteLine($"{e.Name} incorporated into posts.json successfully and added to RAM.");
         }
 
         private static void CompressImage(string filePath)
@@ -84,7 +84,7 @@ namespace Roll_Driven_Stories.Extensions
                 string articleContent = Regex.Replace(GetTextFromMd(articlePath), "<[^>]*>", String.Empty);
                 string nameNoExtension = file.Name.Substring(0, file.Name.LastIndexOf('.'));
                 json = JObject.Load(jsonReader);
-                ((JArray)(json["posts"])).Insert(0, JToken.FromObject((new Post(
+                Post postToAdd = new Post(
                     nameNoExtension,
                     char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1),
                     articleContent.Substring(0, 230),
@@ -93,8 +93,9 @@ namespace Roll_Driven_Stories.Extensions
                     DateTime.Now.ToShortDateString(),
                     articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5, 
                         articleContent.LastIndexOf('.') - articleContent.LastIndexOf("Tags:") - 5)
-                    )
-                )));
+                );
+                ((JArray)(json["posts"])).Insert(0, JToken.FromObject(postToAdd));
+                Startup.TotalPosts.Insert(0, postToAdd);
             }
             System.IO.File.WriteAllText($@"{Startup.ContentRoot}/posts.json", JsonConvert.SerializeObject(json, Formatting.Indented));
         }

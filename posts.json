@@ -1,6 +1,24 @@
 {
   "posts": [
     {
+      "slug": "world",
+      "title": "World",
+      "preview": "Duro cum rituque animae leonum leto\nDecet tridentigero unde tenebrosa quaque cortex constitit\nLorem markdownum tabe amicitur Aganippe corpora precor; sic sub qui. Non\ndedisses gaudeat atque Tmolus monte aestuat deprensi mediis Alc",
+      "md_path": "articles\\world.md",
+      "img_path": "\\images\\compressed\\world50x50.jpg",
+      "published_date": "03/04/2019",
+      "categories": "wesha|hello|teubi"
+    },
+    {
+      "slug": "hello",
+      "title": "Hello",
+      "preview": "Nequiquam periclis plebe diva dolendi cornu aper\nErectos natumque nos victa divisque fortiter\nLorem markdownum illis sed vocatum felix conata homini redire zonae, fuit\nAetolius dare Hectorea et inopes. Ligno edendi occidet intrave",
+      "md_path": "articles\\hello.md",
+      "img_path": "\\images\\compressed\\hello50x50.jpg",
+      "published_date": "03/04/2019",
+      "categories": "turfu|world|teubi"
+    },
+    {
       "slug": "hello",
       "title": "Hello",
       "preview": "Nequiquam periclis plebe diva dolendi cornu aper\nErectos natumque nos victa divisque fortiter\nLorem markdownum illis sed vocatum felix conata homini redire zonae, fuit\nAetolius dare Hectorea et inopes. Ligno edendi occidet intrave",

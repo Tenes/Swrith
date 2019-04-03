@@ -15,7 +15,10 @@ namespace Roll_Driven_Stories.Pages
     public class IndexModel : PageModel
     {
         [BindProperty]
-        public IList<Post> Posts { get; set; }
+        public ICollection<Post> DisplayedPosts { get; set; }
+        [BindProperty]
+        public ICollection<Post> TotalPosts { get; set; }
+        public ushort PageIndex { get; set; }
         public void OnGet()
         {
             LoadLatestArticles();
@@ -23,13 +26,12 @@ namespace Roll_Driven_Stories.Pages
 
         private void LoadLatestArticles()
         {
-            using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
-            using (var jsonReader = new JsonTextReader(streamReader))
-            {
-                var json = JObject.Load(jsonReader);
-                var postArray =  JArray.FromObject(json["posts"].Take(6));
-                Posts = postArray.ToObject<IList<Post>>();
-            }
+            TotalPosts = Startup.TotalPosts;
+            DisplayedPosts = TotalPosts.Take(6).ToList();
+        }
+        public void ChangeDisplayedArticlesByPage()
+        {
+            DisplayedPosts = TotalPosts.Skip((PageIndex) * 6).Take(6).ToList();
         }
     }
 }

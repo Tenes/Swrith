@@ -15,7 +15,10 @@ namespace Roll_Driven_Stories.Pages
     public class TagModel : PageModel
     {
         [BindProperty]
-        public IList<Post> Posts { get; set; }
+        public ICollection<Post> DisplayedPosts { get; set; }
+        [BindProperty]
+        public ICollection<Post> TotalPosts { get; set; }
+        public ushort PageIndex { get; set; }
         public void OnGet(string tag)
         {
             LoadArticlesByTag(tag);
@@ -23,15 +26,16 @@ namespace Roll_Driven_Stories.Pages
 
         private void LoadArticlesByTag(string tag)
         {
-            using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
-            using (var jsonReader = new JsonTextReader(streamReader))
-            {
-                var json = JObject.Load(jsonReader);
-                var postArray = (JArray)json["posts"];
-                Posts = new JArray(postArray.Where(post => ((string)post["categories"])
-                    .Contains(tag)))
-                    .ToObject<IList<Post>>();
-            }
+            
+            TotalPosts = Startup.TotalPosts.Where(post => post.Categories.Contains(tag)).ToList();
+            if(TotalPosts.Any())
+                DisplayedPosts = TotalPosts.Take(6).ToList();
+            else
+                DisplayedPosts = new List<Post>();
+        }
+        private void ChangeDisplayedArticlesByPage()
+        {
+            DisplayedPosts = TotalPosts.Skip((PageIndex) * 6).Take(6).ToList();
         }
     }
 }

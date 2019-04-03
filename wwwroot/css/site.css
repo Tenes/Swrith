@@ -112,6 +112,8 @@ nav form > .searchbar .field {
   box-shadow: 0 1px 1px rgb(30, 30, 30, .4);
   background-color: white;
   border-top: 2px solid #e40712;
+  border-left: 1px solid #ece9e9;
+  border-right: 1px solid #ece9e9;
   flex-grow: 1;
 }
 

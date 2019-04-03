@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Roll_Driven_Stories.Extensions;
+using Roll_Driven_Stories.Classes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Roll_Driven_Stories
 {
@@ -20,12 +23,14 @@ namespace Roll_Driven_Stories
         public static string ContentRoot { get; set; }
         public static FileSystemWatcher ImageWatcher { get; set; }
         public static FileSystemWatcher ArticleWatcher { get; set; }
+        public static IList<Post> TotalPosts {get; set;}
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             ContentRoot = configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
             SystemWatcherUtils.SetupImageWatcher();
             SystemWatcherUtils.SetupArticleWatcher();
+            LoadArticles();
         }
 
 
@@ -63,6 +68,16 @@ namespace Roll_Driven_Stories
             app.UseCookiePolicy();
 
             app.UseMvc();
+        }
+
+        public static void LoadArticles()
+        {
+            using (StreamReader streamReader = System.IO.File.OpenText($@"{ContentRoot}/posts.json"))
+            using (var jsonReader = new JsonTextReader(streamReader))
+            {
+                var json = JObject.Load(jsonReader);
+                TotalPosts=  JArray.FromObject(json["posts"]).ToObject<IList<Post>>();
+            }
         }
     }
 }
