@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Roll_Driven_Stories.Classes
+namespace Dice_Driven_Stories.Classes
 {
     public class Post
     {

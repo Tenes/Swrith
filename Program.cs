@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Roll_Driven_Stories
+namespace Dice_Driven_Stories
 {
     public class Program
     {

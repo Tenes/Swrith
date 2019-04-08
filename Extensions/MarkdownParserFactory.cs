@@ -1,4 +1,4 @@
-namespace Roll_Driven_Stories.Extensions
+namespace Dice_Driven_Stories.Extensions
 {
     /// <summary>
     /// Retrieves an instance of a markdown parser

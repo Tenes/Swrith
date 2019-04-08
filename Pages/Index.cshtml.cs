@@ -8,30 +8,33 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Roll_Driven_Stories.Classes;
+using Dice_Driven_Stories.Classes;
 
-namespace Roll_Driven_Stories.Pages
+namespace Dice_Driven_Stories.Pages
 {
     public class IndexModel : PageModel
     {
         [BindProperty]
         public ICollection<Post> DisplayedPosts { get; set; }
         [BindProperty]
-        public ICollection<Post> TotalPosts { get; set; }
-        public ushort PageIndex { get; set; }
-        public void OnGet()
+        public ushort TotalPages { get; set; } = 1;
+        [BindProperty]
+        public ushort CurrentPage { get; set; } = 1;
+        [BindProperty]
+        public ushort NextPage {get => (ushort)(CurrentPage + 1);}
+        [BindProperty]
+        public ushort OldPage {get => (ushort)(CurrentPage - 1);}
+
+        public void OnGet(ushort pageNumber = 1)
         {
+            CurrentPage = pageNumber;
             LoadLatestArticles();
         }
 
         private void LoadLatestArticles()
         {
-            TotalPosts = Startup.TotalPosts;
-            DisplayedPosts = TotalPosts.Take(6).ToList();
-        }
-        public void ChangeDisplayedArticlesByPage()
-        {
-            DisplayedPosts = TotalPosts.Skip((PageIndex) * 6).Take(6).ToList();
+            TotalPages = (ushort)((Startup.TotalPosts.Count - 1) / 6 + 1);
+            DisplayedPosts = Startup.TotalPosts.Skip((CurrentPage-1) * 6).Take(6).ToList();
         }
     }
 }

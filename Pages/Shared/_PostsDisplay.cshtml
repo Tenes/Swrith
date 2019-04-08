@@ -14,7 +14,7 @@
                     @foreach(string category in post.Categories.Split('|'))
                     {
                         <div class="category">
-                            <a asp-page="Tag" asp-route-tag="@category">
+                            <a asp-page="Search" asp-route-type="tag" asp-route-search="@category">
                                 #@category
                             </a>
                         </div>

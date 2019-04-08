@@ -1,6 +1,6 @@
 using Markdig;
 
-namespace Roll_Driven_Stories.Extensions
+namespace Dice_Driven_Stories.Extensions
 {
     public static class Markdown
     {

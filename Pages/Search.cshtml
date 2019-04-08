@@ -1,8 +1,17 @@
 @page "/read/contains"
-@model Roll_Driven_Stories.Pages.SearchModel
+@model Dice_Driven_Stories.Pages.SearchModel
 @{
     ViewData["Title"] = "Search";
 }
 @Html.Partial("/Pages/Shared/_Navbar.cshtml")
 @Html.Partial("/Pages/Shared/_PostsDisplay.cshtml")
-@Html.Partial("/Pages/Shared/_PaginationDisplay.cshtml")
+<div class="pagination-display">
+    @if(Model.CurrentPage != 1)
+    {
+        <a class="recent-articles" asp-route-type=@Model.SearchType asp-route-search=@Model.Search asp-route-pageNumber=@Model.OldPage >Newer stories</a>
+    }
+    @if(Model.TotalPages > Model.CurrentPage)
+    {
+        <a class="old-articles" asp-route-type=@Model.SearchType asp-route-search=@Model.Search asp-route-pageNumber=@Model.NextPage >Older stories</a>
+    }
+</div>

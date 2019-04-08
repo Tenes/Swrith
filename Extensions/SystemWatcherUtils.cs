@@ -6,9 +6,9 @@ using ImageMagick;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Roll_Driven_Stories.Classes;
+using Dice_Driven_Stories.Classes;
 
-namespace Roll_Driven_Stories.Extensions
+namespace Dice_Driven_Stories.Extensions
 {
     internal static class SystemWatcherUtils
     {

@@ -84,12 +84,12 @@ nav form > .searchbar .field {
 }
 
 .post {
-    flex-grow: 1;
-    min-width: 350px;
-    max-width: 350px;
-    margin: 3em 1.5em 0 1.5em;
-    display: flex;
-    flex-direction: column;
+  flex-grow: 1;
+  min-width: 350px;
+  max-width: 350px;
+  margin: 3em 1.5em 0 1.5em;
+  display: flex;
+  flex-direction: column;
 }
 
 .post .title {
@@ -159,6 +159,23 @@ nav form > .searchbar .field {
 .categories .category > a:hover {
   text-decoration: underline;
   opacity: 1;
+}
+
+.pagination-display {
+  display: flex;
+  padding-bottom: 1em;
+  padding-top: 2em;
+  justify-content: space-evenly;
+}
+
+.pagination-display > a {
+  text-decoration: none;
+  color: rgba(40, 40, 40);
+  border-bottom: 1px solid #8E0007;
+}
+
+.pagination-display > a:hover {
+  color: #bf0009;
 }
 
 .header .navigation > a {

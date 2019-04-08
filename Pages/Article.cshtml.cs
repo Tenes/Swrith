@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using Roll_Driven_Stories.Classes;
-using Roll_Driven_Stories.Extensions;
+using Dice_Driven_Stories.Classes;
+using Dice_Driven_Stories.Extensions;
 using Newtonsoft.Json.Linq;
 
-namespace Roll_Driven_Stories.Pages
+namespace Dice_Driven_Stories.Pages
 {
     public class ArticleModel : PageModel
     {

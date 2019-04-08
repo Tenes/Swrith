@@ -5,7 +5,7 @@ using Markdig.Extensions.AutoIdentifiers;
 using Markdig.Extensions.EmphasisExtras;
 using Markdig.Renderers;
 
-namespace Roll_Driven_Stories.Extensions
+namespace Dice_Driven_Stories.Extensions
 {
 
     /// <summary>

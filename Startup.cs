@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Roll_Driven_Stories.Extensions;
-using Roll_Driven_Stories.Classes;
+using Dice_Driven_Stories.Extensions;
+using Dice_Driven_Stories.Classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Roll_Driven_Stories
+namespace Dice_Driven_Stories
 {
     public class Startup
     {
