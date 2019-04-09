@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Home page";
 }
-@Html.Partial("/Pages/Shared/_Navbar.cshtml")
-@Html.Partial("/Pages/Shared/_PostsDisplay.cshtml")
+<partial name="Shared/_Navbar.cshtml"/>
+<partial name="Shared/_PostsDisplay.cshtml"/>
 <div class="pagination-display">
     @if(Model.CurrentPage != 1)
     {

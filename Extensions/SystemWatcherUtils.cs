@@ -24,7 +24,7 @@ namespace Dice_Driven_Stories.Extensions
             Startup.ImageWatcher.Created += OnCreatePng;
             Startup.ImageWatcher.EnableRaisingEvents = true;
         }
-        
+
         private static void OnCreatePng(object source, FileSystemEventArgs e)
         {
             Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
@@ -89,7 +89,7 @@ namespace Dice_Driven_Stories.Extensions
                 Post postToAdd = new Post(
                     nameNoExtension,
                     char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1),
-                    $"{articleContent.Substring(0, 230)}...",
+                    articleContent.Substring(0, 230),
                     Path.Combine("articles", file.Name),
                     Path.Combine(@"\", "images", "compressed", nameNoExtension + "50x50.jpg"),
                     DateTime.Now.ToShortDateString(),
@@ -105,21 +105,22 @@ namespace Dice_Driven_Stories.Extensions
 
         public static void AppendToRss(string filePath, string fileName)
         {
-            XmlReader rssReader = XmlReader.Create("/rss.xml");
+            XmlReader rssReader = XmlReader.Create($"{Startup.ContentRoot}/rss.xml");
             SyndicationFeed feed = SyndicationFeed.Load(rssReader);
             rssReader.Close();
 
-            SyndicationItem item = new SyndicationItem(fileName, "", new Uri($"https://dicedrivenstories.com/read/{fileName}"), "ItemID", DateTime.Now);
+            SyndicationItem item = new SyndicationItem(char.ToUpper(fileName[0]) + fileName.Substring(1), "", new Uri($"https://dicedrivenstories.com/read/{fileName}"), fileName, DateTime.Now);
 
             XmlDocument doc = new XmlDocument();
             XmlElement content = doc.CreateElement("content", "encoded", "http://purl.org/rss/1.0/modules/content/");
             content.InnerText = GetHtmlFromMd(filePath).Value;
             item.ElementExtensions.Add(content);
-
+            List<SyndicationItem> items = new List<SyndicationItem>(feed.Items);
+            items.Add(item);
             feed.LastUpdatedTime = DateTime.Now;
-            feed.Items.Append(item);
+            feed.Items = items;
 
-            XmlWriter rssWriter = XmlWriter.Create("/rss.xml");
+            XmlWriter rssWriter = XmlWriter.Create($"{Startup.ContentRoot}/rss.xml");
             Rss20FeedFormatter rssFormatter = new Rss20FeedFormatter(feed);
             rssFormatter.WriteTo(rssWriter);
             rssWriter.Close();

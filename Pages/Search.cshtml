@@ -3,8 +3,18 @@
 @{
     ViewData["Title"] = "Search";
 }
-@Html.Partial("/Pages/Shared/_Navbar.cshtml")
-@Html.Partial("/Pages/Shared/_PostsDisplay.cshtml")
+<partial name="Shared/_Navbar.cshtml"/>
+<div class="search-indication">
+    @if(@Model.TotalPosts.Count > 1)
+    { 
+        <p>There are @Model.TotalPosts.Count stories found matching your search.</p>
+    } 
+    else 
+    { 
+        <p>There is @Model.TotalPosts.Count story found matching your search.</p>
+    } 
+</div>
+<partial name="Shared/_PostsDisplay.cshtml"/>
 <div class="pagination-display">
     @if(Model.CurrentPage != 1)
     {
