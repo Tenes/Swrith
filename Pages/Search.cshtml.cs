@@ -12,7 +12,6 @@ using Dice_Driven_Stories.Classes;
 
 namespace Dice_Driven_Stories.Pages
 {
-
     public class SearchModel : PageModel
     {
         [BindProperty]
@@ -70,7 +69,7 @@ namespace Dice_Driven_Stories.Pages
         {
             if (totalPosts.Any())
             {
-                TotalPages = (ushort)((totalPosts.Count - 1) / 6 + 1);
+                TotalPages = (ushort)(((totalPosts.Count - 1) / 6) + 1);
                 DisplayedPosts = totalPosts.Skip((CurrentPage - 1) * 6).Take(6).ToList();
             }
             else

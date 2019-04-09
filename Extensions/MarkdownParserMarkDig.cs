@@ -7,7 +7,6 @@ using Markdig.Renderers;
 
 namespace Dice_Driven_Stories.Extensions
 {
-
     /// <summary>
     /// Wrapper around the MarkDig parser that provides a cached
     /// instance of the Markdown parser. Hooks up custom processing.
@@ -106,7 +105,7 @@ namespace Dice_Driven_Stories.Extensions
 
                 return builder;
             }
-            
+
             // let the passed in action configure the builder
             builder = new MarkdownPipelineBuilder();
             markdigConfiguration.Invoke(builder);

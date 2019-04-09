@@ -113,6 +113,5 @@ namespace Dice_Driven_Stories.Extensions
 
             return html;
         }
-
     }
 }

@@ -33,7 +33,7 @@ namespace Dice_Driven_Stories.Pages
 
         private void LoadLatestArticles()
         {
-            TotalPages = (ushort)((Startup.TotalPosts.Count - 1) / 6 + 1);
+            TotalPages = (ushort)(((Startup.TotalPosts.Count - 1) / 6) + 1);
             DisplayedPosts = Startup.TotalPosts.Skip((CurrentPage - 1) * 6).Take(6).ToList();
         }
     }

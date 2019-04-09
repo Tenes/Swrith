@@ -18,7 +18,7 @@ namespace Dice_Driven_Stories.Pages
         [BindProperty]
         public Post Post { get; set; }
         [BindProperty]
-        public Microsoft.AspNetCore.Html.HtmlString ArticleContent {get; set;}
+        public Microsoft.AspNetCore.Html.HtmlString ArticleContent { get; set; }
         public void OnGet(string slug)
         {
             LoadArticle(slug);
