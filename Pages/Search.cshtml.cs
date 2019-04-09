@@ -12,7 +12,7 @@ using Dice_Driven_Stories.Classes;
 
 namespace Dice_Driven_Stories.Pages
 {
-    
+
     public class SearchModel : PageModel
     {
         [BindProperty]
@@ -26,27 +26,27 @@ namespace Dice_Driven_Stories.Pages
         [BindProperty]
         public string Search { get; set; }
         [BindProperty]
-        public ushort NextPage {get => (ushort)(CurrentPage + 1);}
+        public ushort NextPage { get => (ushort)(CurrentPage + 1); }
         [BindProperty]
-        public ushort OldPage {get => (ushort)(CurrentPage - 1);}
+        public ushort OldPage { get => (ushort)(CurrentPage - 1); }
 
         public void OnGet(string type, string search, ushort pageNumber = 1)
         {
             SearchType = search;
             CurrentPage = pageNumber;
-            if(!String.IsNullOrEmpty(search))
+            if (!String.IsNullOrEmpty(search))
             {
-                switch(type)
+                switch (type)
                 {
                     case "search":
                         LoadArticlesBySearch(search.ToLower());
-                    break;
+                        break;
                     case "tag":
                         LoadArticlesByTag(search);
-                    break;
+                        break;
                     default:
                         LoadEmptyArticle();
-                    break;
+                        break;
                 }
             }
             else
@@ -54,12 +54,12 @@ namespace Dice_Driven_Stories.Pages
         }
 
         private void LoadArticlesBySearch(string search)
-        {            
-            var totalPosts = Startup.TotalPosts.Where(post => post.Title.ToLower().Contains(search) 
+        {
+            var totalPosts = Startup.TotalPosts.Where(post => post.Title.ToLower().Contains(search)
                         || post.Preview.ToLower().Contains(search)).ToList();
             SetDisplayedPost(totalPosts);
         }
-        
+
         private void LoadArticlesByTag(string tag)
         {
             var totalPosts = Startup.TotalPosts.Where(post => post.Categories.Contains(tag)).ToList();
@@ -68,10 +68,10 @@ namespace Dice_Driven_Stories.Pages
 
         private void SetDisplayedPost(ICollection<Post> totalPosts)
         {
-            if(totalPosts.Any())
+            if (totalPosts.Any())
             {
                 TotalPages = (ushort)((totalPosts.Count - 1) / 6 + 1);
-                DisplayedPosts = totalPosts.Skip((CurrentPage-1) * 6).Take(6).ToList();
+                DisplayedPosts = totalPosts.Skip((CurrentPage - 1) * 6).Take(6).ToList();
             }
             else
                 DisplayedPosts = new List<Post>();

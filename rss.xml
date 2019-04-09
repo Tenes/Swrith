@@ -1,0 +1,17 @@
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0">
+  <channel CustomAttribute="Value">
+    <title>Dice Driven Stories</title>
+    <link>https://dicedrivenstories.com</link>
+    <description>Dice Driven Stories Rss Feed</description>
+    <language>en-us</language>
+
+    <copyright>Copyright 2019</copyright>
+
+    <a10:author>
+      <a10:name>Hainezo</a10:name>
+      <a10:uri>https://dicedrivenstories.com</a10:uri>
+      <a10:email>nzo.bruni@gmail.com</a10:email>
+    </a10:author>
+    
+  </channel>
+</rss>

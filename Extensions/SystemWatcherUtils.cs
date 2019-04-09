@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Dice_Driven_Stories.Classes;
+using System.ServiceModel.Syndication;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace Dice_Driven_Stories.Extensions
 {
@@ -21,7 +24,7 @@ namespace Dice_Driven_Stories.Extensions
             Startup.ImageWatcher.Created += OnCreatePng;
             Startup.ImageWatcher.EnableRaisingEvents = true;
         }
-
+        
         private static void OnCreatePng(object source, FileSystemEventArgs e)
         {
             Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
@@ -40,14 +43,13 @@ namespace Dice_Driven_Stories.Extensions
             Startup.ArticleWatcher.EnableRaisingEvents = true;
         }
 
-
         private static void OnCreateArticle(object source, FileSystemEventArgs e)
         {
             Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
             IncludeArticleInJson(e.FullPath);
             Console.WriteLine($"{e.Name} incorporated into posts.json successfully and added to RAM.");
         }
-
+        
         private static void CompressImage(string filePath)
         {
             FileInfo snakewareLogo = new FileInfo(filePath);
@@ -62,7 +64,7 @@ namespace Dice_Driven_Stories.Extensions
             }
             ResizeImage(filePath.Replace("raw", "compressed"));
         }
-
+        
         private static void ResizeImage(string filePath)
         {
             using (var image = new MagickImage(new FileInfo(filePath)))
@@ -87,25 +89,48 @@ namespace Dice_Driven_Stories.Extensions
                 Post postToAdd = new Post(
                     nameNoExtension,
                     char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1),
-                    articleContent.Substring(0, 230),
+                    $"{articleContent.Substring(0, 230)}...",
                     Path.Combine("articles", file.Name),
                     Path.Combine(@"\", "images", "compressed", nameNoExtension + "50x50.jpg"),
                     DateTime.Now.ToShortDateString(),
-                    articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5, 
+                    articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5,
                         articleContent.LastIndexOf('.') - articleContent.LastIndexOf("Tags:") - 5)
                 );
                 ((JArray)(json["posts"])).Insert(0, JToken.FromObject(postToAdd));
                 Startup.TotalPosts.Insert(0, postToAdd);
+                AppendToRss(articlePath, nameNoExtension);
             }
-            System.IO.File.WriteAllText($@"{Startup.ContentRoot}/posts.json", JsonConvert.SerializeObject(json, Formatting.Indented));
+            System.IO.File.WriteAllText($@"{Startup.ContentRoot}/posts.json", JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented));
         }
+
+        public static void AppendToRss(string filePath, string fileName)
+        {
+            XmlReader rssReader = XmlReader.Create("/rss.xml");
+            SyndicationFeed feed = SyndicationFeed.Load(rssReader);
+            rssReader.Close();
+
+            SyndicationItem item = new SyndicationItem(fileName, "", new Uri($"https://dicedrivenstories.com/read/{fileName}"), "ItemID", DateTime.Now);
+
+            XmlDocument doc = new XmlDocument();
+            XmlElement content = doc.CreateElement("content", "encoded", "http://purl.org/rss/1.0/modules/content/");
+            content.InnerText = GetHtmlFromMd(filePath).Value;
+            item.ElementExtensions.Add(content);
+
+            feed.LastUpdatedTime = DateTime.Now;
+            feed.Items.Append(item);
+
+            XmlWriter rssWriter = XmlWriter.Create("/rss.xml");
+            Rss20FeedFormatter rssFormatter = new Rss20FeedFormatter(feed);
+            rssFormatter.WriteTo(rssWriter);
+            rssWriter.Close();
+        }
+
         public static HtmlString GetHtmlFromMd(string articlePath)
         {
             string content = System.IO.File.ReadAllText(articlePath);
             return Markdown.ParseHtmlString(content.Remove(content.LastIndexOf("Tags:")));
         }
 
-        public static string GetTextFromMd(string articlePath) =>  Markdown.Parse(System.IO.File.ReadAllText(articlePath));
-    
+        public static string GetTextFromMd(string articlePath) => Markdown.Parse(System.IO.File.ReadAllText(articlePath));
     }
 }

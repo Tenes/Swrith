@@ -6,9 +6,6 @@ namespace Dice_Driven_Stories.Extensions
 {
     /// <summary>
     /// String utility class that provides several string related operations.
-    /// 
-    /// Extracted from: westwind.utilities and internalized to avoid dependency
-    /// For more info see relevant methods in that library
     /// </summary>
     internal static class StringUtils
     {
@@ -91,15 +88,12 @@ namespace Dice_Driven_Stories.Extensions
             return s.Split('\n').Take(maxLines).ToArray();
         }
 
-
-
         /// <summary>
         /// Note: this is an internal implementation which should duplicate what
         /// Westwind.Utilities.HtmlUtils.SanitizeHtml() does. Avoids dependency
         /// 
         /// https://github.com/RickStrahl/Westwind.Utilities/blob/master/Westwind.Utilities/Utilities/HtmlUtils.cs#L255
         /// </summary>
-
         static string HtmlSanitizeTagBlackList { get; } = "script|iframe|object|embed|form";
 
         static Regex _RegExScript = new Regex($@"(<({HtmlSanitizeTagBlackList})\b[^<]*(?:(?!<\/({HtmlSanitizeTagBlackList}))<[^<]*)*<\/({HtmlSanitizeTagBlackList})>)",
@@ -140,8 +134,8 @@ namespace Dice_Driven_Stories.Extensions
             else
             {
                 html = Regex.Replace(html,
-                                        $@"(<({htmlTagBlacklist})\b[^<]*(?:(?!<\/({HtmlSanitizeTagBlackList}))<[^<]*)*<\/({htmlTagBlacklist})>)",
-                                        "", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                    $@"(<({htmlTagBlacklist})\b[^<]*(?:(?!<\/({HtmlSanitizeTagBlackList}))<[^<]*)*<\/({htmlTagBlacklist})>)",
+                    "", RegexOptions.IgnoreCase | RegexOptions.Multiline);
             }
 
             // Remove javascript: directives
@@ -168,10 +162,7 @@ namespace Dice_Driven_Stories.Extensions
                         html = html.Replace(match.Value, txt);
                 }
             }
-
             return html;
         }
-
-
     }
 }
