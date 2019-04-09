@@ -67,7 +67,6 @@ namespace Dice_Driven_Stories.Extensions
             return string.Empty;
         }
 
-
         /// <summary>
         /// Parses a string into an array of lines broken
         /// by \r\n or \n

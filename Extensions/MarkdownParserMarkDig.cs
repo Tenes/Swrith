@@ -24,10 +24,7 @@ namespace Dice_Driven_Stories.Extensions
         /// </summary>
         public static bool StripScriptCode { get; set; } = true;
 
-
         private readonly bool _usePragmaLines;
-
-
 
         /// <summary>
         /// Optional global configuration for setting up the Markdig Pipeline
@@ -36,7 +33,6 @@ namespace Dice_Driven_Stories.Extensions
 
         public MarkdownParserMarkdig(bool usePragmaLines = false, bool force = false, Action<MarkdownPipelineBuilder> markdigConfiguration = null)
         {
-
             _usePragmaLines = usePragmaLines;
             if (force || Pipeline == null)
             {
@@ -110,8 +106,7 @@ namespace Dice_Driven_Stories.Extensions
 
                 return builder;
             }
-
-
+            
             // let the passed in action configure the builder
             builder = new MarkdownPipelineBuilder();
             markdigConfiguration.Invoke(builder);

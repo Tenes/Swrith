@@ -12,7 +12,6 @@ namespace Dice_Driven_Stories.Extensions
         /// </summary>
         public static IMarkdownParser CurrentParser;
 
-
         /// <summary>
         /// Retrieves a cached instance of the markdown parser
         /// </summary>                
@@ -29,7 +28,5 @@ namespace Dice_Driven_Stories.Extensions
             CurrentParser = new MarkdownParserMarkdig(usePragmaLines, forceLoad);
             return CurrentParser;
         }
-
-
     }
 }
