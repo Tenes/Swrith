@@ -93,6 +93,7 @@ nav form > .searchbar .field {
   margin-top: 0;
   display: flex;
   flex-flow: wrap;
+  justify-content: center;
 }
 
 .post {
