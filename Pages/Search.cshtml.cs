@@ -15,6 +15,8 @@ namespace Dice_Driven_Stories.Pages
     public class SearchModel : PageModel
     {
         [BindProperty]
+        public ICollection<Post> TotalPosts { get; set; }
+        [BindProperty]
         public ICollection<Post> DisplayedPosts { get; set; }
         [BindProperty]
         public ushort TotalPages { get; set; } = 1;
@@ -31,53 +33,46 @@ namespace Dice_Driven_Stories.Pages
 
         public void OnGet(string type, string search, ushort pageNumber = 1)
         {
-            SearchType = search;
+            SearchType = type;
+            Search = search;
             CurrentPage = pageNumber;
             if (!String.IsNullOrEmpty(search))
             {
                 switch (type)
                 {
-                    case "search":
-                        LoadArticlesBySearch(search.ToLower());
-                        break;
                     case "tag":
                         LoadArticlesByTag(search);
                         break;
+                    case "search":
                     default:
-                        LoadEmptyArticle();
+                        LoadArticlesBySearch(search.ToLower());
                         break;
                 }
             }
-            else
-                LoadEmptyArticle();
         }
 
         private void LoadArticlesBySearch(string search)
         {
-            var totalPosts = Startup.TotalPosts.Where(post => post.Title.ToLower().Contains(search)
+            TotalPosts = Startup.TotalPosts.Where(post => post.Title.ToLower().Contains(search)
                         || post.Preview.ToLower().Contains(search)).ToList();
-            SetDisplayedPost(totalPosts);
+            SetDisplayedPost();
         }
 
         private void LoadArticlesByTag(string tag)
         {
-            var totalPosts = Startup.TotalPosts.Where(post => post.Categories.Contains(tag)).ToList();
-            SetDisplayedPost(totalPosts);
+            TotalPosts = Startup.TotalPosts.Where(post => post.Categories.Contains(tag)).ToList();
+            SetDisplayedPost();
         }
 
-        private void SetDisplayedPost(ICollection<Post> totalPosts)
+        private void SetDisplayedPost()
         {
-            if (totalPosts.Any())
+            if (TotalPosts.Any())
             {
-                TotalPages = (ushort)(((totalPosts.Count - 1) / 6) + 1);
-                DisplayedPosts = totalPosts.Skip((CurrentPage - 1) * 6).Take(6).ToList();
+                TotalPages = (ushort)(((TotalPosts.Count - 1) / 6) + 1);
+                DisplayedPosts = TotalPosts.Skip((CurrentPage - 1) * 6).Take(6).ToList();
             }
             else
                 DisplayedPosts = new List<Post>();
-        }
-
-        private void LoadEmptyArticle()
-        {
         }
     }
 }

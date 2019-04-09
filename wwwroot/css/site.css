@@ -75,6 +75,18 @@ nav form > .searchbar .field {
   margin-right: 0.6em;
 }
 
+.search-indication {
+  padding-left: 3em;
+  margin-bottom: -2em;
+  transform: translateY(25px);
+}
+
+.search-indication > p {
+  border-left: 1px solid #e40712;
+  padding-left: 5px;
+  color: rgba(40, 40, 40);
+}
+
 .post-container {
   max-width: 1200px;
   margin: auto;
