@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using Microsoft.AspNetCore.Html;
 
 namespace Dice_Driven_Stories
 {
@@ -26,6 +27,8 @@ namespace Dice_Driven_Stories
         public static FileSystemWatcher ImageWatcher { get; set; }
         public static FileSystemWatcher ArticleWatcher { get; set; }
         public static IList<Post> TotalPosts { get; set; }
+        public static Dictionary<string, HtmlString> PostsContent { get; set; } = new Dictionary<string, HtmlString>();
+        public static string LastAddedSlug { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,6 +36,7 @@ namespace Dice_Driven_Stories
             SystemWatcherUtils.SetupImageWatcher();
             SystemWatcherUtils.SetupArticleWatcher();
             LoadArticles();
+            LoadPostsContent();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -70,6 +74,25 @@ namespace Dice_Driven_Stories
             {
                 var json = JObject.Load(jsonReader);
                 TotalPosts = JArray.FromObject(json["posts"]).ToObject<IList<Post>>();
+            }
+        }
+        
+        public static void LoadPostsContent()
+        {
+            for(ushort index = 0; index < 6; index++)
+            {
+                if(TotalPosts.Count() - 1 < index)
+                    break;
+                Post tempPost;
+                using (StreamReader streamReader = System.IO.File.OpenText(Path.Combine(Startup.ContentRoot, "posts.json")))
+                using (var jsonReader = new JsonTextReader(streamReader))
+                {
+                    var json = JObject.Load(jsonReader);
+                    tempPost = json["posts"].Children<JObject>()
+                            .FirstOrDefault(child => (string)child["slug"] == TotalPosts[index].Slug).ToObject<Post>();
+                }                
+                PostsContent.Add(TotalPosts[index].Slug, SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, tempPost.MdPath)));
+                LastAddedSlug = TotalPosts[index].Slug;
             }
         }
     }

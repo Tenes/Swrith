@@ -3,16 +3,14 @@
 @{
     ViewData["Title"] = "Article";
 }
-
+<partial name="Shared/_Navbar.cshtml"/>
 <div class="header">
     <div class="navigation">
         <a asp-page="Index" >
             <span class="index-link">STORIES</span>
         </a>
-        <span class="article-title">@Model.Post.Title</span>
+        <span class="article-title">@Model.PostTitle</span>
     </div>
-    <h1 class="title">@Model.Post.Title</h3>
+    <h1 class="title">@Model.PostTitle</h3>
 </div>
 <div class="content">@Model.ArticleContent</div>
-
-

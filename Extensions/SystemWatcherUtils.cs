@@ -9,7 +9,6 @@ using Dice_Driven_Stories.Classes;
 using System.ServiceModel.Syndication;
 using System.Collections.Generic;
 using System.Xml;
-using Markdig;
 
 namespace Dice_Driven_Stories.Extensions
 {
@@ -37,13 +36,13 @@ namespace Dice_Driven_Stories.Extensions
         {
             Startup.ArticleWatcher = new FileSystemWatcher();
             Startup.ArticleWatcher.Path = Path.Combine(Startup.ContentRoot, "articles");
-            Startup.ArticleWatcher.NotifyFilter = NotifyFilters.FileName;
+            Startup.ArticleWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
             Startup.ArticleWatcher.Filter = "*.md";
-            Startup.ArticleWatcher.Created += OnCreateArticle;
+            Startup.ArticleWatcher.Changed += OnChangedArticle;
             Startup.ArticleWatcher.EnableRaisingEvents = true;
         }
 
-        private static void OnCreateArticle(object source, FileSystemEventArgs e)
+        private static void OnChangedArticle(object source, FileSystemEventArgs e)
         {
             Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
             IncludeArticleInJson(e.FullPath);
@@ -51,8 +50,8 @@ namespace Dice_Driven_Stories.Extensions
         
         private static void CompressImage(string filePath)
         {
-            FileInfo snakewareLogo = new FileInfo(filePath);
-            using (var magickImage = new MagickImage(snakewareLogo))
+            FileInfo imageToCompress = new FileInfo(filePath);
+            using (var magickImage = new MagickImage(imageToCompress))
             {
                 ImageOptimizer optimizer = new ImageOptimizer();
                 optimizer.LosslessCompress(filePath);
@@ -77,22 +76,23 @@ namespace Dice_Driven_Stories.Extensions
 
         private static void IncludeArticleInJson(string articlePath)
         {
+            if(System.IO.File.ReadAllText(articlePath).Length == 0)
+                return;
             JObject json;
             FileInfo file = new FileInfo(articlePath);
-            System.Console.WriteLine(file.FullName);
-            System.Console.WriteLine(System.IO.File.ReadAllText("/home/shrek/apps/dicedrivenstories.com/publish/introduction.md"));
             string articleContent = Regex.Replace(GetTextFromMd(articlePath), "<[^>]*>", String.Empty);
             string nameNoExtension = file.Name.Substring(0, file.Name.LastIndexOf('.'));
+
             using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
                 json = JObject.Load(jsonReader);
                 Post postToAdd = new Post(
                     nameNoExtension,
-                    char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1),
-                    articleContent.Substring(0, 230),
+                    (char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1)).Replace('-', ' '),
+                    articleContent.Substring(0, 230).Replace("&quot;", "\""),
                     Path.Combine("articles", file.Name),
-                    Path.Combine(@"\", "images", "compressed", nameNoExtension + "50x50.jpg"),
+                    Path.Combine(Path.DirectorySeparatorChar.ToString(), "images", "compressed", nameNoExtension + "50x50.jpg"),
                     DateTime.Now.ToShortDateString(),
                     articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5,
                         articleContent.LastIndexOf('.') - articleContent.LastIndexOf("Tags:") - 5)
@@ -108,7 +108,8 @@ namespace Dice_Driven_Stories.Extensions
 
         public static void AppendToRss(string filePath, string fileName)
         {
-            XmlReader rssReader = XmlReader.Create($"{Startup.ContentRoot}/rss.xml");
+            string rssPath = Path.Combine(Startup.ContentRoot, "wwwroot", "rss.xml");
+            XmlReader rssReader = XmlReader.Create(rssPath);
             SyndicationFeed feed = SyndicationFeed.Load(rssReader);
             rssReader.Close();
 
@@ -127,7 +128,7 @@ namespace Dice_Driven_Stories.Extensions
             feed.LastUpdatedTime = DateTime.Now;
             feed.Items = items;
 
-            XmlWriter rssWriter = XmlWriter.Create($"{Startup.ContentRoot}/rss.xml");
+            XmlWriter rssWriter = XmlWriter.Create(rssPath);
             Rss20FeedFormatter rssFormatter = new Rss20FeedFormatter(feed);
             rssFormatter.WriteTo(rssWriter);
             rssWriter.Close();
@@ -136,9 +137,8 @@ namespace Dice_Driven_Stories.Extensions
         public static HtmlString GetHtmlFromMd(string articlePath)
         {
             string content = System.IO.File.ReadAllText(articlePath);
-            return new HtmlString(Markdown.ToHtml(content.Remove(content.LastIndexOf("Tags:"))));
+            return Markdown.ParseHtmlString(content.Remove(content.LastIndexOf("Tags:")));
         }
-
-        public static string GetTextFromMd(string articlePath) => Markdown.ToHtml(System.IO.File.ReadAllText("/articles/introduction.md"));
+        public static string GetTextFromMd(string articlePath) => Markdown.Parse(System.IO.File.ReadAllText(articlePath));
     }
 }

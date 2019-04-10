@@ -28,6 +28,8 @@ nav {
   display: flex;
   align-items: center;
   padding: 0 3em;
+  position: sticky;
+  z-index: var(--z-navbar);
 }
 
 nav h1 {
@@ -142,6 +144,18 @@ nav form > .searchbar .field {
   font-weight: bold;
 }
 
+.post .infos-container .description > a {
+  padding-left: .5em;
+  color: rgb(40,40,40);
+  text-decoration: none;
+  font-style: italic;
+  font-size: .9em;
+}
+
+.post .infos-container .description > a:hover {
+  color: #bf0009;
+}
+
 .post .infos-container > img {
   border-radius: 50%;
   width: 50px;
@@ -191,6 +205,22 @@ nav form > .searchbar .field {
   color: #bf0009;
 }
 
+.header {
+  max-width: 820px;
+  margin: auto;
+  padding-bottom: 6px;
+  z-index: var(--z-body);
+}
+
+.header h1{
+  font-size: 4em;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-bottom: .25em;
+  margin-top: .25em;
+  line-height: .9;
+}
+
 .header .navigation > a {
   text-decoration: none;
 }
@@ -233,21 +263,6 @@ nav form > .searchbar .field {
   padding-right: 6px;
 }
 
-.header {
-  max-width: 820px;
-  margin: auto;
-  padding-bottom: 6px;
-}
-
-.header h1{
-  font-size: 4em;
-  font-weight: bold;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-bottom: .25em;
-  margin-top: .25em;
-  line-height: .9;
-}
-
 .content h2::first-letter {
   color: #bf0009;
   font-size: 2em;
@@ -268,6 +283,7 @@ nav form > .searchbar .field {
   padding-left: 25px;
   padding-right: 25px;
   margin-bottom: 20px;
+  z-index: var(--z-body);
 }
 
 h3 {
@@ -291,6 +307,8 @@ p {
 
   nav h1 > a {
     font-size: .7em;
+    text-decoration: none;
+    color: rgba(40, 40, 40);
   }
   
   nav form > .searchbar .field {

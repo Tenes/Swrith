@@ -12,7 +12,7 @@ namespace Dice_Driven_Stories.Pages
     public class ArticleModel : PageModel
     {
         [BindProperty]
-        public Post Post { get; set; }
+        public string PostTitle { get; set; }
         [BindProperty]
         public Microsoft.AspNetCore.Html.HtmlString ArticleContent { get; set; }
         public void OnGet(string slug)
@@ -22,14 +22,27 @@ namespace Dice_Driven_Stories.Pages
 
         private void LoadArticle(string slug)
         {
-            using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
-            using (var jsonReader = new JsonTextReader(streamReader))
+            if(Startup.PostsContent.ContainsKey(slug))
             {
-                var json = JObject.Load(jsonReader);
-                Post = json["posts"].Children<JObject>()
-                        .FirstOrDefault(child => (string)child["slug"] == slug).ToObject<Post>();
+                PostTitle = (char.ToUpper(slug[0]) + slug.Substring(1)).Replace('-', ' ');
+                ArticleContent = Startup.PostsContent[slug];
             }
-            ArticleContent = SystemWatcherUtils.GetHtmlFromMd($@"{Startup.ContentRoot}/{Post.MdPath}");
+            else
+            {
+                Post post;
+                using (StreamReader streamReader = System.IO.File.OpenText(Path.Combine(Startup.ContentRoot, "posts.json")))
+                using (var jsonReader = new JsonTextReader(streamReader))
+                {
+                    var json = JObject.Load(jsonReader);
+                    post = json["posts"].Children<JObject>()
+                            .FirstOrDefault(child => (string)child["slug"] == slug).ToObject<Post>();
+                }
+                ArticleContent = SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, post.MdPath));
+                PostTitle = post.Title;
+                if(Startup.PostsContent.Count == 5)
+                    Startup.PostsContent.Remove(Startup.LastAddedSlug);
+                Startup.PostsContent.Add(slug, ArticleContent);
+            }
         }
     }
 }
