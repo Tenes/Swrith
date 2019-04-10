@@ -1,13 +1,13 @@
 {
   "posts": [
     {
-      "slug": "hello",
-      "title": "Venter dolor amicas enter dolor amicas",
-      "preview": "Si ipsa raptas rumor mea quid ubique virtus, est mihi precor ut trabes, in vacuas invidit. Cadunt viae exploratis quicquid Melampus tibi quaedam ponti aliis, mecum. Addidit",
-      "md_path": "articles/hello.md",
-      "img_path": "/images/compressed/hello50x50.jpg",
-      "published_date": "20190314",
-      "categories": "hello|delice"
+      "slug": "introduction",
+      "title": "Introduction",
+      "preview": "This first &quot;article&quot; is going to be a little introduction to the blog.\nFirst of all, welcome everyone that made it this far and were enticed to click on this quite odd website.\nAbout the content\nThe content of this blog ",
+      "md_path": "articles\\introduction.md",
+      "img_path": "\\images\\compressed\\introduction50x50.jpg",
+      "published_date": "10/04/2019",
+      "categories": "infos|welcome"
     }
   ]
 }

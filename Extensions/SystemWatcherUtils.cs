@@ -9,6 +9,7 @@ using Dice_Driven_Stories.Classes;
 using System.ServiceModel.Syndication;
 using System.Collections.Generic;
 using System.Xml;
+using Markdig;
 
 namespace Dice_Driven_Stories.Extensions
 {
@@ -46,7 +47,6 @@ namespace Dice_Driven_Stories.Extensions
         {
             Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
             IncludeArticleInJson(e.FullPath);
-            Console.WriteLine($"{e.Name} incorporated into posts.json successfully and added to RAM.");
         }
         
         private static void CompressImage(string filePath)
@@ -78,12 +78,14 @@ namespace Dice_Driven_Stories.Extensions
         private static void IncludeArticleInJson(string articlePath)
         {
             JObject json;
+            FileInfo file = new FileInfo(articlePath);
+            System.Console.WriteLine(file.FullName);
+            System.Console.WriteLine(System.IO.File.ReadAllText("/home/shrek/apps/dicedrivenstories.com/publish/introduction.md"));
+            string articleContent = Regex.Replace(GetTextFromMd(articlePath), "<[^>]*>", String.Empty);
+            string nameNoExtension = file.Name.Substring(0, file.Name.LastIndexOf('.'));
             using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
-                FileInfo file = new FileInfo(articlePath);
-                string articleContent = Regex.Replace(GetTextFromMd(articlePath), "<[^>]*>", String.Empty);
-                string nameNoExtension = file.Name.Substring(0, file.Name.LastIndexOf('.'));
                 json = JObject.Load(jsonReader);
                 Post postToAdd = new Post(
                     nameNoExtension,
@@ -97,9 +99,11 @@ namespace Dice_Driven_Stories.Extensions
                 );
                 ((JArray)(json["posts"])).Insert(0, JToken.FromObject(postToAdd));
                 Startup.TotalPosts.Insert(0, postToAdd);
-                AppendToRss(articlePath, nameNoExtension);
             }
             System.IO.File.WriteAllText($@"{Startup.ContentRoot}/posts.json", JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented));
+            System.Console.WriteLine($"JSON Updated for the new article.");
+            AppendToRss(articlePath, nameNoExtension);
+            System.Console.WriteLine($"{nameNoExtension} added to the RSS Feed.");
         }
 
         public static void AppendToRss(string filePath, string fileName)
@@ -114,7 +118,11 @@ namespace Dice_Driven_Stories.Extensions
             XmlElement content = doc.CreateElement("content", "encoded", "http://purl.org/rss/1.0/modules/content/");
             content.InnerText = GetHtmlFromMd(filePath).Value;
             item.ElementExtensions.Add(content);
-            List<SyndicationItem> items = new List<SyndicationItem>(feed.Items);
+            List<SyndicationItem> items;
+            if(feed.Items != null)
+                items = new List<SyndicationItem>(feed.Items);
+            else
+                items = new List<SyndicationItem>();
             items.Add(item);
             feed.LastUpdatedTime = DateTime.Now;
             feed.Items = items;
@@ -128,9 +136,9 @@ namespace Dice_Driven_Stories.Extensions
         public static HtmlString GetHtmlFromMd(string articlePath)
         {
             string content = System.IO.File.ReadAllText(articlePath);
-            return Markdown.ParseHtmlString(content.Remove(content.LastIndexOf("Tags:")));
+            return new HtmlString(Markdown.ToHtml(content.Remove(content.LastIndexOf("Tags:"))));
         }
 
-        public static string GetTextFromMd(string articlePath) => Markdown.Parse(System.IO.File.ReadAllText(articlePath));
+        public static string GetTextFromMd(string articlePath) => Markdown.ToHtml(System.IO.File.ReadAllText("/articles/introduction.md"));
     }
 }
