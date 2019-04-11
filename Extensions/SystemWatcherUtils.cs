@@ -9,6 +9,7 @@ using Dice_Driven_Stories.Classes;
 using System.ServiceModel.Syndication;
 using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 
 namespace Dice_Driven_Stories.Extensions
 {
@@ -97,13 +98,25 @@ namespace Dice_Driven_Stories.Extensions
                     articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5,
                         articleContent.LastIndexOf('.') - articleContent.LastIndexOf("Tags:") - 5)
                 );
-                ((JArray)(json["posts"])).Insert(0, JToken.FromObject(postToAdd));
-                Startup.TotalPosts.Insert(0, postToAdd);
+                JToken existingPostAsToken = json["posts"].Children<JObject>().FirstOrDefault(post => ((string)post["slug"]).Equals(nameNoExtension));
+                if(existingPostAsToken != null)
+                {
+                    Post existingPost = existingPostAsToken.ToObject<Post>();
+                    postToAdd.PublishedDate = existingPost.PublishedDate;
+                    Startup.TotalPosts[Startup.TotalPosts.IndexOf(Startup.TotalPosts.First(post => post.Slug.Equals(postToAdd.Slug)))] = postToAdd;
+                    ((JArray)(json["posts"]))[((JArray)(json["posts"])).IndexOf(existingPostAsToken)] = JToken.FromObject(postToAdd);
+                    if(Startup.PostsContent.ContainsKey(postToAdd.Slug))
+                        Startup.PostsContent[postToAdd.Slug] = SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, postToAdd.MdPath));
+                }
+                else
+                {
+                    ((JArray)(json["posts"])).Insert(0, JToken.FromObject(postToAdd));
+                    Startup.TotalPosts.Insert(0, postToAdd);
+                }
             }
             System.IO.File.WriteAllText($@"{Startup.ContentRoot}/posts.json", JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented));
             System.Console.WriteLine($"JSON Updated for the new article.");
             AppendToRss(articlePath, nameNoExtension);
-            System.Console.WriteLine($"{nameNoExtension} added to the RSS Feed.");
         }
 
         public static void AppendToRss(string filePath, string fileName)
@@ -124,7 +137,18 @@ namespace Dice_Driven_Stories.Extensions
                 items = new List<SyndicationItem>(feed.Items);
             else
                 items = new List<SyndicationItem>();
-            items.Add(item);
+            SyndicationItem oldItem = items.FirstOrDefault(olditem => olditem.Id == item.Id);
+            if(oldItem != null)
+            {
+                item.PublishDate = oldItem.PublishDate;
+                items[items.IndexOf(oldItem)] = item;
+                System.Console.WriteLine($"{fileName} updated in the RSS Feed.");
+            }
+            else
+            {
+                items.Add(item);
+                System.Console.WriteLine($"{fileName} added to the RSS Feed.");
+            }
             feed.LastUpdatedTime = DateTime.Now;
             feed.Items = items;
 
