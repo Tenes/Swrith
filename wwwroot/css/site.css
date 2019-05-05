@@ -36,7 +36,7 @@ nav h1 {
   margin: 0.4em 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-nav h1 > a {
+nav h1 > a, nav h1 > a:visited {
   text-decoration: none;
   color: rgba(40, 40, 40);
 }
@@ -305,7 +305,7 @@ p {
     z-index: var(--z-navbar);
   }
 
-  nav h1 > a {
+  nav h1 > a, nav h1 > a:visited {
     font-size: .7em;
     text-decoration: none;
     color: rgba(40, 40, 40);

@@ -1,7 +1,7 @@
 @page "/read/{slug}"
 @model Dice_Driven_Stories.Pages.ArticleModel
 @{
-    ViewData["Title"] = "Article";
+    ViewData["Title"] = @Model.PostTitle;
 }
 <partial name="Shared/_Navbar.cshtml"/>
 <div class="header">
