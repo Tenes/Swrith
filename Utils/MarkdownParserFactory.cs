@@ -1,4 +1,4 @@
-namespace Dice_Driven_Stories.Extensions
+namespace Swrith.Utils
 {
     /// <summary>
     /// Retrieves an instance of a markdown parser

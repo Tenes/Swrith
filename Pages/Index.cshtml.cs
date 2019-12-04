@@ -2,9 +2,10 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Dice_Driven_Stories.Classes;
+using Swrith.Classes;
+using Swrith.Utils;
 
-namespace Dice_Driven_Stories.Pages
+namespace Swrith.Pages
 {
     public class IndexModel : PageModel
     {
@@ -27,8 +28,8 @@ namespace Dice_Driven_Stories.Pages
 
         private void LoadLatestArticles()
         {
-            TotalPages = (ushort)(((Startup.TotalPosts.Count - 1) / 6) + 1);
-            DisplayedPosts = Startup.TotalPosts.Skip((CurrentPage - 1) * 6).Take(6).ToList();
+            TotalPages = (ushort)(((PostUtils.TotalPosts.Count - 1) / 6) + 1);
+            DisplayedPosts = PostUtils.TotalPosts.Skip((CurrentPage - 1) * 6).Take(6).ToList();
         }
     }
 }

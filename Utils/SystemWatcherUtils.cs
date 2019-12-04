@@ -3,15 +3,16 @@ using System.IO;
 using System.Text.RegularExpressions;
 using ImageMagick;
 using Microsoft.AspNetCore.Html;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Dice_Driven_Stories.Classes;
+using System.Text.Json;
+using Swrith.Classes;
 using System.ServiceModel.Syndication;
 using System.Collections.Generic;
 using System.Xml;
 using System.Linq;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
-namespace Dice_Driven_Stories.Extensions
+namespace Swrith.Utils
 {
     internal static class SystemWatcherUtils
     {
@@ -48,7 +49,7 @@ namespace Dice_Driven_Stories.Extensions
             Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
             IncludeArticleInJson(e.FullPath);
         }
-        
+
         private static void CompressImage(string filePath)
         {
             FileInfo imageToCompress = new FileInfo(filePath);
@@ -63,7 +64,7 @@ namespace Dice_Driven_Stories.Extensions
             }
             ResizeImage(filePath.Replace("raw", "compressed"));
         }
-        
+
         private static void ResizeImage(string filePath)
         {
             using (var image = new MagickImage(new FileInfo(filePath)))
@@ -75,6 +76,49 @@ namespace Dice_Driven_Stories.Extensions
             }
         }
 
+        // New but not yet fully functionnal in .net core 3.0
+        // private static void IncludeArticleInJson(string articlePath)
+        // {
+        //     if (System.IO.File.ReadAllText(articlePath).Length == 0)
+        //         return;
+        //     FileInfo file = new FileInfo(articlePath);
+        //     string articleContent = Regex.Replace(GetTextFromMd(articlePath), "<[^>]*>", String.Empty);
+        //     string nameNoExtension = file.Name.Substring(0, file.Name.LastIndexOf('.'));
+
+        //     Post postToAdd = new Post(
+        //         nameNoExtension,
+        //         (char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1)).Replace('-', ' '),
+        //         articleContent.Substring(0, 230).Replace("&quot;", "\""),
+        //         Path.Combine("articles", file.Name),
+        //         Path.Combine(Path.DirectorySeparatorChar.ToString(), "images", "compressed", nameNoExtension + "50x50.jpg"),
+        //         DateTime.Now.ToShortDateString(),
+        //         articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5,
+        //             articleContent.LastIndexOf('.') - articleContent.LastIndexOf("Tags:") - 5)
+        //     );
+        //     var jsonRoot = PostUtils.GetJsonRoot();
+        //     var existingPost = PostUtils.LoadPost(jsonRoot, nameNoExtension);
+        //     var updatedPosts = jsonRoot.ToObject<List<Post>>();
+        //     if (existingPost != null)
+        //     {
+        //         postToAdd.PublishedDate = existingPost.PublishedDate;
+        //         PostUtils.TotalPosts[PostUtils.TotalPosts.IndexOf(PostUtils.TotalPosts.First(post => post.Slug.Equals(postToAdd.Slug)))] = postToAdd;
+        //         updatedPosts[updatedPosts.IndexOf(updatedPosts.First(post => post.Slug.Equals(postToAdd.Slug)))] = postToAdd;
+        //         if (PostUtils.PostsContent.ContainsKey(postToAdd.Slug))
+        //             PostUtils.PostsContent[postToAdd.Slug] = SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, postToAdd.MdPath));
+        //     }
+        //     else
+        //     {
+        //         updatedPosts.Insert(0, postToAdd);
+        //         PostUtils.TotalPosts.Insert(0, postToAdd);
+        //     }
+        //     var options = new JsonSerializerOptions
+        //     {
+        //         WriteIndented = true
+        //     };
+        //     System.IO.File.WriteAllText(PostUtils.JsonPath, JsonSerializer.Serialize(jsonRoot, options));
+        //     System.Console.WriteLine($"JSON Updated for the new article.");
+        //     AppendToRss(articlePath, nameNoExtension);
+        // }
         private static void IncludeArticleInJson(string articlePath)
         {
             if(System.IO.File.ReadAllText(articlePath).Length == 0)
@@ -103,18 +147,18 @@ namespace Dice_Driven_Stories.Extensions
                 {
                     Post existingPost = existingPostAsToken.ToObject<Post>();
                     postToAdd.PublishedDate = existingPost.PublishedDate;
-                    Startup.TotalPosts[Startup.TotalPosts.IndexOf(Startup.TotalPosts.First(post => post.Slug.Equals(postToAdd.Slug)))] = postToAdd;
+                    PostUtils.TotalPosts[PostUtils.TotalPosts.IndexOf(PostUtils.TotalPosts.First(post => post.Slug.Equals(postToAdd.Slug)))] = postToAdd;
                     ((JArray)(json["posts"]))[((JArray)(json["posts"])).IndexOf(existingPostAsToken)] = JToken.FromObject(postToAdd);
-                    if(Startup.PostsContent.ContainsKey(postToAdd.Slug))
-                        Startup.PostsContent[postToAdd.Slug] = SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, postToAdd.MdPath));
+                    if(PostUtils.PostsContent.ContainsKey(postToAdd.Slug))
+                        PostUtils.PostsContent[postToAdd.Slug] = SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, postToAdd.MdPath));
                 }
                 else
                 {
                     ((JArray)(json["posts"])).Insert(0, JToken.FromObject(postToAdd));
-                    Startup.TotalPosts.Insert(0, postToAdd);
+                    PostUtils.TotalPosts.Insert(0, postToAdd);
                 }
             }
-            System.IO.File.WriteAllText($@"{Startup.ContentRoot}/posts.json", JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented));
+            System.IO.File.WriteAllText(PostUtils.JsonPath, JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented));
             System.Console.WriteLine($"JSON Updated for the new article.");
             AppendToRss(articlePath, nameNoExtension);
         }
@@ -126,19 +170,19 @@ namespace Dice_Driven_Stories.Extensions
             SyndicationFeed feed = SyndicationFeed.Load(rssReader);
             rssReader.Close();
 
-            SyndicationItem item = new SyndicationItem(char.ToUpper(fileName[0]) + fileName.Substring(1), "", new Uri($"https://dicedrivenstories.com/read/{fileName}"), fileName, DateTime.Now);
+            SyndicationItem item = new SyndicationItem(char.ToUpper(fileName[0]) + fileName.Substring(1), "", new Uri($"https://swrith.com/read/{fileName}"), fileName, DateTime.Now);
 
             XmlDocument doc = new XmlDocument();
             XmlElement content = doc.CreateElement("content", "encoded", "http://purl.org/rss/1.0/modules/content/");
             content.InnerText = GetHtmlFromMd(filePath).Value;
             item.ElementExtensions.Add(content);
             List<SyndicationItem> items;
-            if(feed.Items != null)
+            if (feed.Items != null)
                 items = new List<SyndicationItem>(feed.Items);
             else
                 items = new List<SyndicationItem>();
             SyndicationItem oldItem = items.FirstOrDefault(olditem => olditem.Id == item.Id);
-            if(oldItem != null)
+            if (oldItem != null)
             {
                 item.PublishDate = oldItem.PublishDate;
                 items[items.IndexOf(oldItem)] = item;

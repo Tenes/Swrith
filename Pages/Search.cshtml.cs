@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Dice_Driven_Stories.Classes;
+using Swrith.Classes;
+using Swrith.Utils;
 
-namespace Dice_Driven_Stories.Pages
+namespace Swrith.Pages
 {
     public class SearchModel : PageModel
     {
@@ -48,14 +49,14 @@ namespace Dice_Driven_Stories.Pages
 
         private void LoadArticlesBySearch(string search)
         {
-            TotalPosts = Startup.TotalPosts.Where(post => post.Title.ToLower().Contains(search)
+            TotalPosts = PostUtils.TotalPosts.Where(post => post.Title.ToLower().Contains(search)
                         || post.Preview.ToLower().Contains(search)).ToList();
             SetDisplayedPost();
         }
 
         private void LoadArticlesByTag(string tag)
         {
-            TotalPosts = Startup.TotalPosts.Where(post => post.Categories.Contains(tag)).ToList();
+            TotalPosts = PostUtils.TotalPosts.Where(post => post.Categories.Contains(tag)).ToList();
             SetDisplayedPost();
         }
 

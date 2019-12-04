@@ -1,13 +1,10 @@
 using System.IO;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
-using Dice_Driven_Stories.Classes;
-using Dice_Driven_Stories.Extensions;
-using Newtonsoft.Json.Linq;
+using Swrith.Classes;
+using Swrith.Utils;
 
-namespace Dice_Driven_Stories.Pages
+namespace Swrith.Pages
 {
     public class ArticleModel : PageModel
     {
@@ -22,26 +19,19 @@ namespace Dice_Driven_Stories.Pages
 
         private void LoadArticle(string slug)
         {
-            if(Startup.PostsContent.ContainsKey(slug))
+            if (PostUtils.PostsContent.ContainsKey(slug))
             {
                 PostTitle = (char.ToUpper(slug[0]) + slug.Substring(1)).Replace('-', ' ');
-                ArticleContent = Startup.PostsContent[slug];
+                ArticleContent = PostUtils.PostsContent[slug];
             }
             else
             {
-                Post post;
-                using (StreamReader streamReader = System.IO.File.OpenText(Path.Combine(Startup.ContentRoot, "posts.json")))
-                using (var jsonReader = new JsonTextReader(streamReader))
-                {
-                    var json = JObject.Load(jsonReader);
-                    post = json["posts"].Children<JObject>()
-                            .FirstOrDefault(child => (string)child["slug"] == slug).ToObject<Post>();
-                }
+                Post post = PostUtils.LoadPost(PostUtils.GetJsonRoot(), slug);
                 ArticleContent = SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, post.MdPath));
                 PostTitle = post.Title;
-                if(Startup.PostsContent.Count == 5)
-                    Startup.PostsContent.Remove(Startup.LastAddedSlug);
-                Startup.PostsContent.Add(slug, ArticleContent);
+                if (PostUtils.PostsContent.Count == 5)
+                    PostUtils.PostsContent.Remove(PostUtils.LastAddedSlug);
+                PostUtils.PostsContent.Add(slug, ArticleContent);
             }
         }
     }

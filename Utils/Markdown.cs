@@ -1,6 +1,6 @@
 using Markdig;
 
-namespace Dice_Driven_Stories.Extensions
+namespace Swrith.Utils
 {
     public static class Markdown
     {

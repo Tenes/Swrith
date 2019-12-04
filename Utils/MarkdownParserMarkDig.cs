@@ -5,7 +5,7 @@ using Markdig.Extensions.AutoIdentifiers;
 using Markdig.Extensions.EmphasisExtras;
 using Markdig.Renderers;
 
-namespace Dice_Driven_Stories.Extensions
+namespace Swrith.Utils
 {
     /// <summary>
     /// Wrapper around the MarkDig parser that provides a cached

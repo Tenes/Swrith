@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Dice_Driven_Stories.csproj"
+                "${workspaceFolder}/Swrith.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

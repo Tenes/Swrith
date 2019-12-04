@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Dice_Driven_Stories.Extensions
+namespace Swrith.Utils
 {
     /// <summary>
     /// String utility class that provides several string related operations.

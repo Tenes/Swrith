@@ -1,4 +1,4 @@
-namespace Dice_Driven_Stories.Extensions
+namespace Swrith.Utils
 {
     public interface IMarkdownParser
     {

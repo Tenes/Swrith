@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Dice_Driven_Stories.Extensions
+namespace Swrith.Utils
 {
     /// <summary>
     /// Base class that includes various fix up methods for custom parsing
