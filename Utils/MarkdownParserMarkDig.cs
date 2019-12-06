@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Markdig;
 using Markdig.Extensions.AutoIdentifiers;
-using Markdig.Extensions.EmphasisExtras;
 using Markdig.Renderers;
 
 namespace Swrith.Utils

@@ -2,7 +2,6 @@
     <h1>
         <a asp-page="Index">Swrith</a>
     </h1>
-    
     <form method="get" action="/read/contains">
         <p class="searchbar">
             <input class="field" type="hidden" id="type" name="type" value="search"/>
@@ -10,4 +9,5 @@
             <button class="img" type="submit" aria-label="Search Button"></button>
         </p>
     </form>
+    <a href="~/rss.xml" class="rss"><img src="~/images/rss.svg" alt="Rss Icon"></a>
 </nav>

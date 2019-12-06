@@ -59,7 +59,7 @@ nav form > .searchbar > label {
 }
 
 nav form > .searchbar .img {
-  background: url("/images/compressed/search.png") no-repeat;
+  background: url("/images/search.svg") no-repeat;
   height: 2em;
   width: 2em;
   background-position: center;
@@ -292,6 +292,11 @@ h3 {
 
 p {
   margin-top: 0;
+}
+
+.rss {
+  margin-left: .5em;
+  padding-top: 0.2em;
 }
 
 @media (max-width: 1024px) {

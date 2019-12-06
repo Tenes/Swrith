@@ -3,13 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Swrith</title>
+    <title>@ViewData["Title"] - Swrith Short Stories</title>
     <meta name="author" content="Hainezo B."/>
-    <meta name="description" content="A blog of different stories driven by dice roll."/>
-    <meta name="keywords" content="short, stories, blog, personnal, enzo, bruni, article, articles, fantasy, story, writer, writing, words, hainezo, book, books, english, random"/>
-    <meta  property="og:type" content="article">
+    <meta name="description" content="A simple blog of different short stories. If you find a story you like, there might be others set in the same writting-universe."/>
+    <meta name="keywords" content="short, stories, blog, personnal, article, articles, fantasy, story, writer, writing, words, hainezo, book, books, english, random, writting universe, universe"/>
+    <meta  property="og:type" content="Story">
     <meta  property="og:site_name" content="Swrith">
-    <meta  property="og:image" content="~/bookicon.ico">
+    <meta  property="og:url" content="https://swrith.com">
+    <meta  property="og:title" content="Swrith - Short Stories">
+    <meta  property="og:description" content="A simple blog of different short stories.">
+    <meta  property="og:image" content="https://swrith.com/bookicon.ico">
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
@@ -18,7 +21,9 @@
     </environment>
     <link rel="icon" href="~/bookicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="Flux RSS" href="rss.xml">
+    <link rel="canonical" href="https://swrith.com" />
 </head>
+<partial name="_Navbar.cshtml"/>
 <body>
     @RenderBody()
 </body>

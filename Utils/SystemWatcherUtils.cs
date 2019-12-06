@@ -3,7 +3,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using ImageMagick;
 using Microsoft.AspNetCore.Html;
-using System.Text.Json;
 using Swrith.Classes;
 using System.ServiceModel.Syndication;
 using System.Collections.Generic;
@@ -60,65 +59,11 @@ namespace Swrith.Utils
                 magickImage.Format = MagickFormat.Jpg;
                 magickImage.Quality = 80;
                 magickImage.Strip();
-                magickImage.Write(filePath.Replace("raw", "compressed"));
-            }
-            ResizeImage(filePath.Replace("raw", "compressed"));
-        }
-
-        private static void ResizeImage(string filePath)
-        {
-            using (var image = new MagickImage(new FileInfo(filePath)))
-            {
-                var size = new MagickGeometry(50, 50);
-                size.IgnoreAspectRatio = true;
-                image.Resize(size);
-                image.Write(filePath.Insert(filePath.LastIndexOf('.'), $"50x50"));
+                magickImage.Resize(new MagickGeometry(100, 100){IgnoreAspectRatio = true});
+                magickImage.Write((filePath.Insert(filePath.LastIndexOf('.'), $"100x100").Replace("raw", "compressed")));
             }
         }
 
-        // New but not yet fully functionnal in .net core 3.0
-        // private static void IncludeArticleInJson(string articlePath)
-        // {
-        //     if (System.IO.File.ReadAllText(articlePath).Length == 0)
-        //         return;
-        //     FileInfo file = new FileInfo(articlePath);
-        //     string articleContent = Regex.Replace(GetTextFromMd(articlePath), "<[^>]*>", String.Empty);
-        //     string nameNoExtension = file.Name.Substring(0, file.Name.LastIndexOf('.'));
-
-        //     Post postToAdd = new Post(
-        //         nameNoExtension,
-        //         (char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1)).Replace('-', ' '),
-        //         articleContent.Substring(0, 230).Replace("&quot;", "\""),
-        //         Path.Combine("articles", file.Name),
-        //         Path.Combine(Path.DirectorySeparatorChar.ToString(), "images", "compressed", nameNoExtension + "50x50.jpg"),
-        //         DateTime.Now.ToShortDateString(),
-        //         articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5,
-        //             articleContent.LastIndexOf('.') - articleContent.LastIndexOf("Tags:") - 5)
-        //     );
-        //     var jsonRoot = PostUtils.GetJsonRoot();
-        //     var existingPost = PostUtils.LoadPost(jsonRoot, nameNoExtension);
-        //     var updatedPosts = jsonRoot.ToObject<List<Post>>();
-        //     if (existingPost != null)
-        //     {
-        //         postToAdd.PublishedDate = existingPost.PublishedDate;
-        //         PostUtils.TotalPosts[PostUtils.TotalPosts.IndexOf(PostUtils.TotalPosts.First(post => post.Slug.Equals(postToAdd.Slug)))] = postToAdd;
-        //         updatedPosts[updatedPosts.IndexOf(updatedPosts.First(post => post.Slug.Equals(postToAdd.Slug)))] = postToAdd;
-        //         if (PostUtils.PostsContent.ContainsKey(postToAdd.Slug))
-        //             PostUtils.PostsContent[postToAdd.Slug] = SystemWatcherUtils.GetHtmlFromMd(Path.Combine(Startup.ContentRoot, postToAdd.MdPath));
-        //     }
-        //     else
-        //     {
-        //         updatedPosts.Insert(0, postToAdd);
-        //         PostUtils.TotalPosts.Insert(0, postToAdd);
-        //     }
-        //     var options = new JsonSerializerOptions
-        //     {
-        //         WriteIndented = true
-        //     };
-        //     System.IO.File.WriteAllText(PostUtils.JsonPath, JsonSerializer.Serialize(jsonRoot, options));
-        //     System.Console.WriteLine($"JSON Updated for the new article.");
-        //     AppendToRss(articlePath, nameNoExtension);
-        // }
         private static void IncludeArticleInJson(string articlePath)
         {
             if(System.IO.File.ReadAllText(articlePath).Length == 0)
@@ -127,6 +72,7 @@ namespace Swrith.Utils
             FileInfo file = new FileInfo(articlePath);
             string articleContent = Regex.Replace(GetTextFromMd(articlePath), "<[^>]*>", String.Empty);
             string nameNoExtension = file.Name.Substring(0, file.Name.LastIndexOf('.'));
+            nameNoExtension = nameNoExtension.Replace('_', '-');
 
             using (StreamReader streamReader = System.IO.File.OpenText($@"{Startup.ContentRoot}/posts.json"))
             using (var jsonReader = new JsonTextReader(streamReader))
@@ -134,10 +80,10 @@ namespace Swrith.Utils
                 json = JObject.Load(jsonReader);
                 Post postToAdd = new Post(
                     nameNoExtension,
-                    (char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1)).Replace('-', ' '),
+                    (char.ToUpper(nameNoExtension[0]) + nameNoExtension.Substring(1)).Replace('-', ' ').Replace('_', ' '),
                     articleContent.Substring(0, 230).Replace("&quot;", "\""),
                     Path.Combine("articles", file.Name),
-                    Path.Combine(Path.DirectorySeparatorChar.ToString(), "images", "compressed", nameNoExtension + "50x50.jpg"),
+                    Path.Combine(Path.DirectorySeparatorChar.ToString(), "images", "compressed", nameNoExtension + "100x100.jpg"),
                     DateTime.Now.ToShortDateString(),
                     articleContent.Substring(articleContent.LastIndexOf("Tags:") + 5,
                         articleContent.LastIndexOf('.') - articleContent.LastIndexOf("Tags:") - 5)

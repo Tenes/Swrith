@@ -1,5 +1,3 @@
-using Markdig;
-
 namespace Swrith.Utils
 {
     public static class Markdown
