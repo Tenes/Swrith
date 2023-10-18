@@ -7,7 +7,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Magick.NET-Q8-x64" Version="7.14.5" />
+    <PackageReference Include="Magick.NET-Q8-x64" Version="13.3.0" />
     <PackageReference Include="Markdig" Version="0.18.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
